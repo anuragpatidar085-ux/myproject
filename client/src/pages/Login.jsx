@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
-import { Building2, Lock, Mail, ArrowRight, Shield, UserCheck, Briefcase, Sun, Moon } from 'lucide-react';
+import { Building2, Lock, Mail, ArrowRight, Shield, UserCheck, Briefcase, Sun, Moon, MapPin } from 'lucide-react';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -37,7 +37,6 @@ const Login = () => {
   const handleQuickLogin = (demoEmail) => {
     setEmail(demoEmail);
     setPassword('Password123!');
-    // Trigger submission
     login(demoEmail, 'Password123!').then((res) => {
       if (res.success) {
         navigate('/');
@@ -59,7 +58,7 @@ const Login = () => {
         </button>
       </div>
 
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-lg">
         {/* Card */}
         <div className="rounded-3xl border border-slate-200/80 bg-white p-8 shadow-xl dark:border-slate-800 dark:bg-slate-900">
           {/* Logo & Headline */}
@@ -70,40 +69,71 @@ const Login = () => {
             <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
               Staff<span className="text-blue-600">Sync</span>
             </h2>
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-              Enterprise Workforce & HRMS Suite
-            </p>
+            <div className="flex items-center justify-center gap-1.5 mt-1">
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                Enterprise Workforce & HRMS Suite
+              </span>
+              <span className="rounded bg-amber-50 px-1.5 py-0.2 text-[10px] font-bold text-amber-700 dark:bg-amber-950 dark:text-amber-300">
+                🇮🇳 India Edition
+              </span>
+            </div>
           </div>
 
-          {/* Quick Demo Login Personas */}
-          <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50/70 p-3.5 dark:border-slate-800 dark:bg-slate-800/40">
-            <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 text-center mb-2.5">
-              ⚡ 1-Click Demo Login by Persona
+          {/* Quick Demo Login Personas with Indian Profiles */}
+          <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-800/40">
+            <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 text-center mb-3">
+              ⚡ 1-Click Persona Login (Pre-Configured)
             </p>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              {/* Admin Persona */}
               <button
                 type="button"
                 onClick={() => handleQuickLogin('admin@staffsync.com')}
-                className="flex flex-col items-center justify-center rounded-xl border border-purple-200 bg-purple-50 p-2 text-center text-xs font-bold text-purple-700 transition hover:bg-purple-100 dark:border-purple-800 dark:bg-purple-950/40 dark:text-purple-300"
+                className="flex flex-col items-start rounded-xl border border-purple-200 bg-purple-50/70 p-3 text-left transition hover:bg-purple-100 dark:border-purple-800 dark:bg-purple-950/40"
               >
-                <Shield className="h-4 w-4 mb-1 text-purple-600 dark:text-purple-400" />
-                Admin / HR
+                <div className="flex items-center justify-between w-full mb-1">
+                  <Shield className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                  <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded bg-purple-200 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+                    Admin / HR
+                  </span>
+                </div>
+                <span className="text-xs font-bold text-slate-900 dark:text-white">Rajesh Sharma</span>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">VP People & Culture</span>
+                <span className="text-[9px] text-purple-700 dark:text-purple-300 font-semibold mt-1">📍 Bengaluru HQ</span>
               </button>
+
+              {/* Manager Persona */}
               <button
                 type="button"
                 onClick={() => handleQuickLogin('manager@staffsync.com')}
-                className="flex flex-col items-center justify-center rounded-xl border border-blue-200 bg-blue-50 p-2 text-center text-xs font-bold text-blue-700 transition hover:bg-blue-100 dark:border-blue-800 dark:bg-blue-950/40 dark:text-blue-300"
+                className="flex flex-col items-start rounded-xl border border-blue-200 bg-blue-50/70 p-3 text-left transition hover:bg-blue-100 dark:border-blue-800 dark:bg-blue-950/40"
               >
-                <Briefcase className="h-4 w-4 mb-1 text-blue-600 dark:text-blue-400" />
-                Manager
+                <div className="flex items-center justify-between w-full mb-1">
+                  <Briefcase className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded bg-blue-200 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                    Manager
+                  </span>
+                </div>
+                <span className="text-xs font-bold text-slate-900 dark:text-white">Priya Patel</span>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Director Engineering</span>
+                <span className="text-[9px] text-blue-700 dark:text-blue-300 font-semibold mt-1">📍 Whitefield Hub</span>
               </button>
+
+              {/* Employee Persona */}
               <button
                 type="button"
                 onClick={() => handleQuickLogin('employee@staffsync.com')}
-                className="flex flex-col items-center justify-center rounded-xl border border-emerald-200 bg-emerald-50 p-2 text-center text-xs font-bold text-emerald-700 transition hover:bg-emerald-100 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
+                className="flex flex-col items-start rounded-xl border border-emerald-200 bg-emerald-50/70 p-3 text-left transition hover:bg-emerald-100 dark:border-emerald-800 dark:bg-emerald-950/40"
               >
-                <UserCheck className="h-4 w-4 mb-1 text-emerald-600 dark:text-emerald-400" />
-                Employee
+                <div className="flex items-center justify-between w-full mb-1">
+                  <UserCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                  <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded bg-emerald-200 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200">
+                    Employee
+                  </span>
+                </div>
+                <span className="text-xs font-bold text-slate-900 dark:text-white">Amit Verma</span>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Sr. Full Stack Dev</span>
+                <span className="text-[9px] text-emerald-700 dark:text-emerald-300 font-semibold mt-1">📍 Pune Center</span>
               </button>
             </div>
           </div>
@@ -113,7 +143,7 @@ const Login = () => {
               <div className="w-full border-t border-slate-200 dark:border-slate-800"></div>
             </div>
             <span className="relative bg-white px-3 text-xs font-medium text-slate-400 dark:bg-slate-900">
-              or sign in with email
+              or sign in with credentials
             </span>
           </div>
 
@@ -134,7 +164,7 @@ const Login = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@company.com"
+                  placeholder="name@staffsync.com"
                   required
                   className="w-full rounded-xl border border-slate-200 bg-slate-50/50 pl-10 pr-4 py-2.5 text-sm text-slate-900 transition-all focus:border-blue-500 focus:bg-white focus:outline-none dark:border-slate-800 dark:bg-slate-800/60 dark:text-white dark:focus:border-blue-500"
                 />
@@ -173,7 +203,7 @@ const Login = () => {
         </div>
 
         <p className="mt-6 text-center text-xs text-slate-400 dark:text-slate-600">
-          StaffSync Enterprise System &bull; Secured with JWT & bcrypt
+          StaffSync Technologies India &bull; Bengaluru &bull; Mumbai &bull; Pune &bull; Hyderabad
         </p>
       </div>
     </div>

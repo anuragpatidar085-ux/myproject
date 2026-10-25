@@ -204,8 +204,8 @@ const Attendance = () => {
                   myAttendance.map((rec) => (
                     <tr key={rec._id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40">
                       <td className="p-4 font-semibold text-slate-900 dark:text-white">{rec.date}</td>
-                      <td className="p-4 font-mono">{rec.checkIn ? new Date(rec.checkIn).toLocaleTimeString() : '-'}</td>
-                      <td className="p-4 font-mono">{rec.checkOut ? new Date(rec.checkOut).toLocaleTimeString() : '-'}</td>
+                      <td className="p-4 font-mono">{rec.checkIn ? new Date(rec.checkIn).toLocaleTimeString('en-IN') : '-'}</td>
+                      <td className="p-4 font-mono">{rec.checkOut ? new Date(rec.checkOut).toLocaleTimeString('en-IN') : '-'}</td>
                       <td className="p-4 font-bold text-blue-600 dark:text-blue-400">{rec.workHours ? `${rec.workHours} hrs` : '-'}</td>
                       <td className="p-4">
                         <span className={`border text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${getStatusBadge(rec.status)}`}>
@@ -327,9 +327,9 @@ const Attendance = () => {
                         </div>
                       </td>
                       <td className="p-4 text-slate-600 dark:text-slate-300">{rec.employee?.department}</td>
-                      <td className="p-4 font-mono">{rec.checkIn ? new Date(rec.checkIn).toLocaleTimeString() : '-'}</td>
-                      <td className="p-4 font-mono">{rec.checkOut ? new Date(rec.checkOut).toLocaleTimeString() : '-'}</td>
-                      <td className="p-4 font-bold text-blue-600 dark:text-blue-400">{rec.workHours ? `${rec.workHours}h` : '-'}</td>
+                      <td className="p-4 font-mono">{rec.checkIn ? new Date(rec.checkIn).toLocaleTimeString('en-IN') : '-'}</td>
+                      <td className="p-4 font-mono">{rec.checkOut ? new Date(rec.checkOut).toLocaleTimeString('en-IN') : '-'}</td>
+                      <td className="p-4 font-bold text-blue-600 dark:text-blue-400">{rec.workHours ? `${rec.workHours} hrs` : '-'}</td>
                       <td className="p-4">
                         <span className={`border text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${getStatusBadge(rec.status)}`}>
                           {rec.status}

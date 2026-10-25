@@ -64,7 +64,26 @@ const employeeSchema = new mongoose.Schema(
     },
     workLocation: {
       type: String,
-      default: 'Headquarters (Hybrid)',
+      default: 'Bengaluru HQ (Hybrid)',
+    },
+    workMode: {
+      type: String,
+      enum: ['Office', 'WFH', 'Hybrid'],
+      default: 'Hybrid',
+    },
+    panNumber: {
+      type: String,
+      uppercase: true,
+      default: 'ABCDE1234F',
+    },
+    uanNumber: {
+      type: String,
+      default: '101234567890',
+    },
+    bankDetails: {
+      bankName: { type: String, default: 'HDFC Bank' },
+      accountNo: { type: String, default: '50100234567890' },
+      ifscCode: { type: String, default: 'HDFC0001234' },
     },
     status: {
       type: String,
@@ -72,17 +91,20 @@ const employeeSchema = new mongoose.Schema(
       default: 'active',
     },
     salary: {
-      basic: { type: Number, default: 45000 },
-      hra: { type: Number, default: 18000 },
-      allowances: { type: Number, default: 7000 },
-      deductions: { type: Number, default: 2000 },
-      pf: { type: Number, default: 3500 },
-      netPay: { type: Number, default: 64500 },
+      basic: { type: Number, default: 55000 },
+      hra: { type: Number, default: 27500 },
+      allowances: { type: Number, default: 15000 },
+      conveyance: { type: Number, default: 3500 },
+      pf: { type: Number, default: 6600 },
+      professionalTax: { type: Number, default: 200 },
+      deductions: { type: Number, default: 4500 },
+      netPay: { type: Number, default: 89700 },
     },
     leaveBalances: {
       casual: { type: Number, default: 12 },
       sick: { type: Number, default: 10 },
       paid: { type: Number, default: 18 },
+      restricted: { type: Number, default: 2 },
     },
     documents: [
       {

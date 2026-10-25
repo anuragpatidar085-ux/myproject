@@ -14,6 +14,9 @@ import {
   TrendingUp,
   Activity,
   ArrowRight,
+  MapPin,
+  Building,
+  Sparkles,
 } from 'lucide-react';
 import {
   PieChart,
@@ -29,7 +32,9 @@ import {
 } from 'recharts';
 import { Link } from 'react-router-dom';
 
-const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4'];
+const COLORS = ['#2563eb', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4'];
+
+const formatINR = (val) => Number(val || 0).toLocaleString('en-IN');
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -63,19 +68,19 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-6">
-      {/* Welcome Banner */}
+      {/* Welcome Hero Banner with Indian Tech Hub Context */}
       <div className="rounded-3xl bg-gradient-to-r from-blue-700 via-indigo-700 to-blue-800 p-8 text-white shadow-xl shadow-blue-500/10">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold backdrop-blur-md mb-2">
               <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+              <span>🇮🇳 Bengaluru &bull; Mumbai &bull; Pune &bull; Hyderabad &bull; Gurugram</span>
             </div>
             <h1 className="text-3xl font-black tracking-tight">
-              Welcome back, {user?.name}! 👋
+              Namaste, {user?.name}! 🙏
             </h1>
             <p className="mt-1 text-sm text-blue-100 max-w-xl">
-              StaffSync Workforce Operations Center. Here is your team summary, attendance metrics, and pending actions today.
+              StaffSync India Workforce Operations Center. Track biometric attendance, leave approvals, Indian statutory payroll, and team pipelines.
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -83,7 +88,7 @@ const Dashboard = () => {
               to="/attendance"
               className="rounded-xl bg-white px-4 py-2.5 text-xs font-bold text-blue-700 shadow-sm transition hover:bg-blue-50"
             >
-              My Attendance
+              My Shifts
             </Link>
             <Link
               to="/leaves"
@@ -101,28 +106,28 @@ const Dashboard = () => {
       {/* KPI Cards Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          title="Total Headcount"
+          title="All-India Headcount"
           value={summary.totalEmployees || 0}
-          subtitle={`${summary.activeEmployees || 0} active employees`}
+          subtitle={`${summary.activeEmployees || 0} active on tech payroll`}
           icon={Users}
           color="blue"
         />
         <StatCard
           title="Today's Attendance"
           value={`${summary.attendancePercentage || 0}%`}
-          subtitle={`${summary.totalCheckedIn || 0} staff clocked in`}
+          subtitle={`${summary.totalCheckedIn || 0} clocked in on IST biometric`}
           icon={CheckCircle}
           color="emerald"
         />
         <StatCard
-          title="Pending Leaves"
+          title="Pending Leave Approvals"
           value={summary.pendingLeaveCount || 0}
-          subtitle="Awaiting manager approval"
+          subtitle="Casual / Sick / Privilege leaves"
           icon={Calendar}
           color="amber"
         />
         <StatCard
-          title="Workforce Status"
+          title="Shift Punctuality"
           value={`${summary.lateToday || 0} Late`}
           subtitle={`${summary.halfDayToday || 0} half-day shifts recorded`}
           icon={Activity}
@@ -138,7 +143,7 @@ const Dashboard = () => {
             <h3 className="font-bold text-slate-900 dark:text-white">
               Department Distribution
             </h3>
-            <span className="text-xs text-slate-400">Headcount</span>
+            <span className="text-xs text-slate-400">Tech & Ops</span>
           </div>
 
           <div className="h-64 w-full">
@@ -192,10 +197,10 @@ const Dashboard = () => {
         <div className="lg:col-span-2 rounded-2xl border border-slate-200 bg-white p-6 shadow-xs dark:border-slate-800 dark:bg-slate-900">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-bold text-slate-900 dark:text-white">
-              7-Day Attendance Activity
+              7-Day Shift Attendance Activity
             </h3>
             <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-              <TrendingUp className="h-3.5 w-3.5" /> Live Trend
+              <TrendingUp className="h-3.5 w-3.5" /> Biometric Logs
             </span>
           </div>
 
@@ -234,11 +239,21 @@ const Dashboard = () => {
           <div className="flex items-center gap-2 mb-4">
             <Cake className="h-5 w-5 text-amber-500" />
             <h3 className="font-bold text-slate-900 dark:text-white">
-              Upcoming Celebrations
+              Festivals & Celebrations
             </h3>
           </div>
 
           <div className="space-y-4">
+            {/* Festival banner */}
+            <div className="rounded-xl border border-amber-200 bg-amber-50/70 p-3 dark:border-amber-900 dark:bg-amber-950/30">
+              <span className="flex items-center gap-1.5 text-xs font-bold text-amber-800 dark:text-amber-200">
+                <Sparkles className="h-4 w-4 text-amber-600" /> 🪔 Diwali Festival Holidays
+              </span>
+              <p className="text-[11px] text-amber-700 dark:text-amber-300 mt-1">
+                Office closed Oct 31st & Nov 1st across Bengaluru, Mumbai, Pune, and Hyderabad.
+              </p>
+            </div>
+
             <div>
               <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">
                 🎂 Birthdays this month
@@ -298,7 +313,7 @@ const Dashboard = () => {
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <Calendar className="h-4 w-4 text-blue-500" />
-              Pending Leaves
+              Pending Leave Requests
             </h3>
             <Link to="/leaves" className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline">
               View all &rarr;
@@ -308,8 +323,8 @@ const Dashboard = () => {
           {pendingLeaves.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-10 text-center">
               <CheckCircle className="h-8 w-8 text-emerald-500 mb-2" />
-              <p className="text-xs font-semibold text-slate-600 dark:text-slate-300">All caught up!</p>
-              <p className="text-[11px] text-slate-400">No pending leave requests awaiting approval.</p>
+              <p className="text-xs font-semibold text-slate-600 dark:text-slate-300">All approvals cleared!</p>
+              <p className="text-[11px] text-slate-400">No pending leave applications awaiting review.</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -324,10 +339,10 @@ const Dashboard = () => {
                     </span>
                   </div>
                   <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 line-clamp-1">
-                    Reason: "{leave.reason}"
+                    "{leave.reason}"
                   </p>
                   <p className="text-[10px] text-slate-400 mt-1">
-                    {new Date(leave.startDate).toLocaleDateString()} &rarr; {new Date(leave.endDate).toLocaleDateString()}
+                    {new Date(leave.startDate).toLocaleDateString('en-IN')} &rarr; {new Date(leave.endDate).toLocaleDateString('en-IN')}
                   </p>
                 </div>
               ))}
@@ -340,7 +355,7 @@ const Dashboard = () => {
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <Megaphone className="h-4 w-4 text-purple-500" />
-              Notice Board
+              India Notice Board
             </h3>
             <Link to="/announcements" className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline">
               All notices &rarr;
@@ -371,7 +386,7 @@ const Dashboard = () => {
                 </p>
                 <div className="flex items-center justify-between mt-2 text-[10px] text-slate-400">
                   <span>By {a.authorName}</span>
-                  <span>{new Date(a.createdAt).toLocaleDateString()}</span>
+                  <span>{new Date(a.createdAt).toLocaleDateString('en-IN')}</span>
                 </div>
               </div>
             ))}

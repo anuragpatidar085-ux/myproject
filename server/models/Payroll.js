@@ -34,6 +34,10 @@ const payrollSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    conveyance: {
+      type: Number,
+      default: 0,
+    },
     bonus: {
       type: Number,
       default: 0,
@@ -41,6 +45,10 @@ const payrollSchema = new mongoose.Schema(
     pf: {
       type: Number,
       default: 0,
+    },
+    professionalTax: {
+      type: Number,
+      default: 200,
     },
     tax: {
       type: Number,

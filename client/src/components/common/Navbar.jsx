@@ -1,10 +1,10 @@
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
-import { Sun, Moon, LogOut, User, Bell, Shield, Menu } from 'lucide-react';
+import { Sun, Moon, LogOut, User, Menu, Shield, Briefcase, UserCheck, MapPin } from 'lucide-react';
 
 const Navbar = ({ onToggleSidebar }) => {
-  const { user, logout } = useAuth();
+  const { user, login, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
 
   const getRoleBadgeColor = (role) => {
@@ -18,8 +18,12 @@ const Navbar = ({ onToggleSidebar }) => {
     }
   };
 
+  const handleQuickSwitch = (email) => {
+    login(email, 'Password123!');
+  };
+
   return (
-    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-slate-200 bg-white/90 px-4 backdrop-blur-md transition-colors dark:border-slate-800 dark:bg-slate-900/90 lg:px-8">
+    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-slate-200 bg-white/95 px-4 backdrop-blur-md transition-colors dark:border-slate-800 dark:bg-slate-900/95 lg:px-8">
       {/* Left: Mobile hamburger & title */}
       <div className="flex items-center gap-3">
         <button
@@ -37,11 +41,54 @@ const Navbar = ({ onToggleSidebar }) => {
             <span className="text-lg font-black tracking-tight text-slate-900 dark:text-white">
               Staff<span className="text-blue-600">Sync</span>
             </span>
-            <span className="hidden text-xs font-semibold text-slate-400 dark:text-slate-500 sm:inline-block ml-2 px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-              Enterprise HRMS
+            <span className="hidden text-[11px] font-bold text-amber-600 dark:text-amber-400 sm:inline-block ml-2 px-1.5 py-0.5 rounded bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800">
+              🇮🇳 India HRMS
             </span>
           </div>
         </div>
+      </div>
+
+      {/* Center: 1-Click Persona Switcher for effortless testing */}
+      <div className="hidden xl:flex items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 p-1 dark:border-slate-800 dark:bg-slate-800/50">
+        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2">
+          Quick Persona:
+        </span>
+        <button
+          onClick={() => handleQuickSwitch('admin@staffsync.com')}
+          className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-bold transition ${
+            user?.email === 'admin@staffsync.com'
+              ? 'bg-purple-600 text-white shadow-xs'
+              : 'text-slate-600 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-700'
+          }`}
+          title="Switch to Rajesh Sharma (VP HR)"
+        >
+          <Shield className="h-3.5 w-3.5" />
+          Rajesh (Admin)
+        </button>
+        <button
+          onClick={() => handleQuickSwitch('manager@staffsync.com')}
+          className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-bold transition ${
+            user?.email === 'manager@staffsync.com'
+              ? 'bg-blue-600 text-white shadow-xs'
+              : 'text-slate-600 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-700'
+          }`}
+          title="Switch to Priya Patel (Engineering Director)"
+        >
+          <Briefcase className="h-3.5 w-3.5" />
+          Priya (Manager)
+        </button>
+        <button
+          onClick={() => handleQuickSwitch('employee@staffsync.com')}
+          className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-bold transition ${
+            user?.email === 'employee@staffsync.com'
+              ? 'bg-emerald-600 text-white shadow-xs'
+              : 'text-slate-600 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-700'
+          }`}
+          title="Switch to Amit Verma (Senior Software Engineer)"
+        >
+          <UserCheck className="h-3.5 w-3.5" />
+          Amit (Employee)
+        </button>
       </div>
 
       {/* Right: Actions, theme toggle, and profile */}
@@ -85,7 +132,7 @@ const Navbar = ({ onToggleSidebar }) => {
                 >
                   {user.role}
                 </span>
-                <span className="text-xs text-slate-400 truncate max-w-[120px]">
+                <span className="text-xs text-slate-400 truncate max-w-[140px]">
                   {user.department}
                 </span>
               </div>

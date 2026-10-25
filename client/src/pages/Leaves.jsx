@@ -13,6 +13,7 @@ import {
   User,
   AlertCircle,
   HelpCircle,
+  Sparkles,
 } from 'lucide-react';
 
 const Leaves = () => {
@@ -20,7 +21,7 @@ const Leaves = () => {
   const isAdminOrManager = hasRole('admin', 'manager');
 
   const [activeTab, setActiveTab] = useState('my'); // 'my', 'all', 'calendar'
-  const [balances, setBalances] = useState({ casual: 12, sick: 10, paid: 18 });
+  const [balances, setBalances] = useState({ casual: 10, sick: 9, paid: 15, restricted: 2 });
   const [myRequests, setMyRequests] = useState([]);
   const [allRequests, setAllRequests] = useState([]);
   const [teamCalendar, setTeamCalendar] = useState([]);
@@ -44,7 +45,7 @@ const Leaves = () => {
     try {
       const res = await api.get('/leaves/my');
       if (res.data?.success) {
-        setBalances(res.data.data.balances || { casual: 12, sick: 10, paid: 18 });
+        setBalances(res.data.data.balances || { casual: 10, sick: 9, paid: 15, restricted: 2 });
         setMyRequests(res.data.data.requests || []);
       }
     } catch (err) {
@@ -92,7 +93,7 @@ const Leaves = () => {
       });
 
       if (res.data?.success) {
-        setToast({ type: 'success', message: 'Leave application submitted successfully!' });
+        setToast({ type: 'success', message: 'Leave application submitted to manager!' });
         setIsApplyModalOpen(false);
         setReason('');
         setStartDate('');
@@ -110,7 +111,7 @@ const Leaves = () => {
   const handleOpenReview = (leave, action) => {
     setSelectedLeave(leave);
     setReviewAction(action);
-    setReviewNote(action === 'approved' ? 'Approved by manager' : 'Declined due to scheduling constraints');
+    setReviewNote(action === 'approved' ? 'Approved. Please ensure smooth handover.' : 'Declined due to sprint deployment.');
     setReviewModalOpen(true);
   };
 
@@ -125,7 +126,7 @@ const Leaves = () => {
       if (res.data?.success) {
         setToast({
           type: 'success',
-          message: `Leave request has been ${reviewAction}! Balance updated automatically.`,
+          message: `Leave request has been ${reviewAction}! Balance deducted automatically.`,
         });
         setReviewModalOpen(false);
         fetchAllLeaves();
@@ -157,10 +158,10 @@ const Leaves = () => {
         <div>
           <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white flex items-center gap-2.5">
             <CalendarCheck className="h-6 w-6 text-blue-600" />
-            Leave Management & Approvals
+            Indian Leave Management & Out-of-Office
           </h1>
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            Track leave balances, submit requests with automatic deduction, and monitor team availability.
+            Track Casual (CL), Sick (SL), Earned (EL), and Restricted (RH) leave balances with automatic deduction.
           </p>
         </div>
 
@@ -172,44 +173,57 @@ const Leaves = () => {
         </button>
       </div>
 
-      {/* Leave Balances Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="rounded-2xl border border-blue-200/60 bg-blue-50/50 p-5 dark:border-blue-900 dark:bg-blue-950/20">
+      {/* Leave Balances Cards (Indian Corporate Standard) */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="rounded-2xl border border-blue-200/60 bg-blue-50/50 p-4 dark:border-blue-900 dark:bg-blue-950/20">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-blue-700 dark:text-blue-300">
-              Casual Leave Balance
+            <span className="text-[11px] font-bold uppercase tracking-wider text-blue-700 dark:text-blue-300">
+              Casual Leave (CL)
             </span>
-            <span className="text-xs text-blue-500 font-semibold">12 allotted / yr</span>
+            <span className="text-[10px] text-blue-500 font-semibold">12 allotted</span>
           </div>
-          <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-3xl font-black text-blue-700 dark:text-blue-300">{balances.casual}</span>
-            <span className="text-xs font-semibold text-blue-500">Days Available</span>
+          <div className="mt-2 flex items-baseline gap-1.5">
+            <span className="text-3xl font-black text-blue-700 dark:text-blue-300">{balances.casual ?? 10}</span>
+            <span className="text-xs font-semibold text-blue-500">Days Left</span>
           </div>
         </div>
 
-        <div className="rounded-2xl border border-amber-200/60 bg-amber-50/50 p-5 dark:border-amber-900 dark:bg-amber-950/20">
+        <div className="rounded-2xl border border-amber-200/60 bg-amber-50/50 p-4 dark:border-amber-900 dark:bg-amber-950/20">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300">
-              Sick Leave Balance
+            <span className="text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300">
+              Sick Leave (SL)
             </span>
-            <span className="text-xs text-amber-500 font-semibold">10 allotted / yr</span>
+            <span className="text-[10px] text-amber-500 font-semibold">10 allotted</span>
           </div>
-          <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-3xl font-black text-amber-700 dark:text-amber-300">{balances.sick}</span>
-            <span className="text-xs font-semibold text-amber-500">Days Available</span>
+          <div className="mt-2 flex items-baseline gap-1.5">
+            <span className="text-3xl font-black text-amber-700 dark:text-amber-300">{balances.sick ?? 9}</span>
+            <span className="text-xs font-semibold text-amber-500">Days Left</span>
           </div>
         </div>
 
-        <div className="rounded-2xl border border-emerald-200/60 bg-emerald-50/50 p-5 dark:border-emerald-900 dark:bg-emerald-950/20">
+        <div className="rounded-2xl border border-emerald-200/60 bg-emerald-50/50 p-4 dark:border-emerald-900 dark:bg-emerald-950/20">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-300">
-              Paid / Privilege Leave
+            <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-300">
+              Earned Leave (EL)
             </span>
-            <span className="text-xs text-emerald-500 font-semibold">18 allotted / yr</span>
+            <span className="text-[10px] text-emerald-500 font-semibold">18 allotted</span>
           </div>
-          <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-3xl font-black text-emerald-700 dark:text-emerald-300">{balances.paid}</span>
-            <span className="text-xs font-semibold text-emerald-500">Days Available</span>
+          <div className="mt-2 flex items-baseline gap-1.5">
+            <span className="text-3xl font-black text-emerald-700 dark:text-emerald-300">{balances.paid ?? 15}</span>
+            <span className="text-xs font-semibold text-emerald-500">Days Left</span>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-purple-200/60 bg-purple-50/50 p-4 dark:border-purple-900 dark:bg-purple-950/20">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-purple-700 dark:text-purple-300">
+              Restricted (RH)
+            </span>
+            <span className="text-[10px] text-purple-500 font-semibold">Festivals</span>
+          </div>
+          <div className="mt-2 flex items-baseline gap-1.5">
+            <span className="text-3xl font-black text-purple-700 dark:text-purple-300">{balances.restricted ?? 2}</span>
+            <span className="text-xs font-semibold text-purple-500">Days Left</span>
           </div>
         </div>
       </div>
@@ -236,7 +250,7 @@ const Leaves = () => {
                 : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-slate-400'
             }`}
           >
-            Team Requests ({allRequests.filter((r) => r.status === 'pending').length} Pending)
+            Team Applications ({allRequests.filter((r) => r.status === 'pending').length} Pending)
           </button>
         )}
 
@@ -248,7 +262,7 @@ const Leaves = () => {
               : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-slate-400'
           }`}
         >
-          Team Leave Calendar
+          Team Out-of-Office Calendar
         </button>
       </div>
 
@@ -258,19 +272,19 @@ const Leaves = () => {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50/50 text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:border-slate-800 dark:bg-slate-800/40">
-                <th className="p-4">Leave Type</th>
+                <th className="p-4">Leave Category</th>
                 <th className="p-4">Period</th>
                 <th className="p-4">Days</th>
                 <th className="p-4">Reason</th>
                 <th className="p-4">Status</th>
-                <th className="p-4">Manager Feedback</th>
+                <th className="p-4">Reviewer Note</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-xs dark:divide-slate-800">
               {myRequests.length === 0 ? (
                 <tr>
                   <td colSpan="6" className="p-8 text-center text-slate-400">
-                    No leave requests found. Click "Apply for Leave" above to request time off.
+                    No leave requests submitted yet. Click "Apply for Leave" above.
                   </td>
                 </tr>
               ) : (
@@ -278,7 +292,7 @@ const Leaves = () => {
                   <tr key={req._id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40">
                     <td className="p-4 font-bold text-slate-900 dark:text-white uppercase">{req.leaveType}</td>
                     <td className="p-4 text-slate-600 dark:text-slate-300">
-                      {new Date(req.startDate).toLocaleDateString()} &rarr; {new Date(req.endDate).toLocaleDateString()}
+                      {new Date(req.startDate).toLocaleDateString('en-IN')} &rarr; {new Date(req.endDate).toLocaleDateString('en-IN')}
                     </td>
                     <td className="p-4 font-bold text-blue-600">{req.daysCount} days</td>
                     <td className="p-4 text-slate-600 dark:text-slate-300 max-w-xs truncate">{req.reason}</td>
@@ -331,7 +345,7 @@ const Leaves = () => {
                   </td>
                   <td className="p-4 uppercase font-bold text-slate-800 dark:text-slate-200">{req.leaveType}</td>
                   <td className="p-4 text-slate-600 dark:text-slate-300">
-                    {new Date(req.startDate).toLocaleDateString()} - {new Date(req.endDate).toLocaleDateString()}
+                    {new Date(req.startDate).toLocaleDateString('en-IN')} - {new Date(req.endDate).toLocaleDateString('en-IN')}
                   </td>
                   <td className="p-4 font-bold text-blue-600">{req.daysCount} days</td>
                   <td className="p-4 text-slate-600 dark:text-slate-300 max-w-xs truncate">{req.reason}</td>
@@ -374,7 +388,7 @@ const Leaves = () => {
         <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs dark:border-slate-800 dark:bg-slate-900">
           <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
             <Calendar className="h-4 w-4 text-blue-600" />
-            Approved Team Leaves Roster
+            Approved Team Out-of-Office Calendar
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -403,7 +417,7 @@ const Leaves = () => {
                   <div>
                     <span className="text-[10px] font-bold uppercase text-slate-400 block">Out of Office</span>
                     <span className="font-semibold text-slate-800 dark:text-slate-200">
-                      {new Date(leave.startDate).toLocaleDateString()} - {new Date(leave.endDate).toLocaleDateString()}
+                      {new Date(leave.startDate).toLocaleDateString('en-IN')} - {new Date(leave.endDate).toLocaleDateString('en-IN')}
                     </span>
                   </div>
                   <span className="rounded-md bg-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 uppercase">
@@ -417,19 +431,19 @@ const Leaves = () => {
       )}
 
       {/* Apply Leave Modal */}
-      <Modal isOpen={isApplyModalOpen} onClose={() => setIsApplyModalOpen(false)} title="Apply for Leave">
+      <Modal isOpen={isApplyModalOpen} onClose={() => setIsApplyModalOpen(false)} title="Apply for Leave (India Roster)">
         <form onSubmit={handleApplySubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Leave Type</label>
+            <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Leave Category</label>
             <select
               value={leaveType}
               onChange={(e) => setLeaveType(e.target.value)}
               className="w-full rounded-xl border border-slate-200 p-2.5 text-xs dark:border-slate-800 dark:bg-slate-800 dark:text-white"
             >
-              <option value="casual">Casual Leave (Balance: {balances.casual}d)</option>
-              <option value="sick">Sick Leave (Balance: {balances.sick}d)</option>
-              <option value="paid">Paid / Privilege Leave (Balance: {balances.paid}d)</option>
-              <option value="unpaid">Unpaid Leave</option>
+              <option value="casual">Casual Leave - CL (Balance: {balances.casual}d)</option>
+              <option value="sick">Sick Leave - SL (Balance: {balances.sick}d)</option>
+              <option value="paid">Earned / Privilege Leave - EL (Balance: {balances.paid}d)</option>
+              <option value="unpaid">Unpaid Leave (Loss of Pay)</option>
             </select>
           </div>
 
@@ -462,7 +476,7 @@ const Leaves = () => {
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               rows="3"
-              placeholder="State the reason for this time-off request..."
+              placeholder="e.g. Attending family wedding, Diwali festival holidays, viral fever..."
               required
               className="w-full rounded-xl border border-slate-200 p-2.5 text-xs dark:border-slate-800 dark:bg-slate-800 dark:text-white"
             />
@@ -487,7 +501,7 @@ const Leaves = () => {
         </form>
       </Modal>
 
-      {/* Review Leave Modal */}
+      {/* Review Leave Modal with Indian Quick Presets */}
       <Modal
         isOpen={reviewModalOpen}
         onClose={() => setReviewModalOpen(false)}
@@ -497,11 +511,34 @@ const Leaves = () => {
           <p className="text-xs text-slate-600 dark:text-slate-300">
             Employee: <span className="font-bold">{selectedLeave?.employee?.firstName} {selectedLeave?.employee?.lastName}</span>
             <br />
-            Type: <span className="font-bold uppercase">{selectedLeave?.leaveType}</span> ({selectedLeave?.daysCount} days)
+            Category: <span className="font-bold uppercase">{selectedLeave?.leaveType}</span> ({selectedLeave?.daysCount} days)
           </p>
 
           <div>
-            <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Review Comments</label>
+            <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Quick Presets</label>
+            <div className="flex flex-wrap gap-1.5 mb-2">
+              <button
+                type="button"
+                onClick={() => setReviewNote('Approved. Advance Happy Diwali!')}
+                className="rounded-lg bg-amber-50 px-2 py-1 text-[10px] font-semibold text-amber-700 border border-amber-200"
+              >
+                🪔 Happy Diwali
+              </button>
+              <button
+                type="button"
+                onClick={() => setReviewNote('Approved. Please ensure smooth sprint handover.')}
+                className="rounded-lg bg-blue-50 px-2 py-1 text-[10px] font-semibold text-blue-700 border border-blue-200"
+              >
+                🤝 Sprint Handover
+              </button>
+              <button
+                type="button"
+                onClick={() => setReviewNote('Get well soon. Please take complete rest.')}
+                className="rounded-lg bg-emerald-50 px-2 py-1 text-[10px] font-semibold text-emerald-700 border border-emerald-200"
+              >
+                🩺 Get Well Soon
+              </button>
+            </div>
             <textarea
               value={reviewNote}
               onChange={(e) => setReviewNote(e.target.value)}

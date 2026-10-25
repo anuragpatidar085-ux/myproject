@@ -10,13 +10,16 @@ import {
   Briefcase,
   MapPin,
   Calendar,
-  DollarSign,
+  CreditCard,
   FileText,
   Upload,
   UserCheck,
   Shield,
   Clock,
+  Building,
 } from 'lucide-react';
+
+const formatINR = (val) => Number(val || 0).toLocaleString('en-IN');
 
 const EmployeeDetail = () => {
   const { id } = useParams();
@@ -57,7 +60,7 @@ const EmployeeDetail = () => {
         fileUrl: docUrl,
       });
       if (res.data?.success) {
-        setToast({ type: 'success', message: 'Document added to employee records!' });
+        setToast({ type: 'success', message: 'Document added to official personnel record!' });
         setDocTitle('');
         setDocUrl('');
         fetchEmployee();
@@ -68,13 +71,13 @@ const EmployeeDetail = () => {
   };
 
   if (loading) {
-    return <div className="py-20 text-center text-xs text-slate-400">Loading employee details...</div>;
+    return <div className="py-20 text-center text-xs text-slate-400">Loading personnel details...</div>;
   }
 
   if (!employee) {
     return (
       <div className="py-20 text-center">
-        <p className="text-sm font-semibold text-slate-600 dark:text-slate-300">Employee not found.</p>
+        <p className="text-sm font-semibold text-slate-600 dark:text-slate-300">Employee record not found.</p>
         <Link to="/employees" className="mt-3 inline-block text-xs text-blue-600 underline">
           &larr; Back to Directory
         </Link>
@@ -116,6 +119,9 @@ const EmployeeDetail = () => {
                 <span className="rounded-lg bg-blue-50 px-2 py-0.5 text-xs font-mono font-bold text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">
                   {employee.employeeCode}
                 </span>
+                <span className="rounded-lg bg-emerald-50 px-2 py-0.5 text-xs font-bold text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
+                  {employee.workMode || 'Hybrid'}
+                </span>
               </div>
               <p className="text-sm font-semibold text-blue-600 dark:text-blue-400 mt-0.5">
                 {employee.designation} &bull; {employee.department}
@@ -125,10 +131,10 @@ const EmployeeDetail = () => {
                   <MapPin className="h-3.5 w-3.5" /> {employee.workLocation}
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <Calendar className="h-3.5 w-3.5" /> Joined {new Date(employee.joiningDate).toLocaleDateString()}
+                  <Calendar className="h-3.5 w-3.5" /> Joined {new Date(employee.joiningDate).toLocaleDateString('en-IN')}
                 </span>
-                <span className="flex items-center gap-1.5">
-                  <Shield className="h-3.5 w-3.5" /> Role: {employee.role?.toUpperCase()}
+                <span className="flex items-center gap-1.5 font-mono text-[11px] bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
+                  PAN: {employee.panNumber || 'ABCPS1234F'}
                 </span>
               </div>
             </div>
@@ -155,7 +161,7 @@ const EmployeeDetail = () => {
                 : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400'
             }`}
           >
-            Profile & Compensation
+            Profile & Compensation (INR)
           </button>
           <button
             onClick={() => setActiveTab('documents')}
@@ -173,10 +179,10 @@ const EmployeeDetail = () => {
       {/* Tab 1: Profile & Compensation */}
       {activeTab === 'profile' && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Contact & Mapping Card */}
+          {/* Contact & Banking Card */}
           <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs dark:border-slate-800 dark:bg-slate-900">
             <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-4">
-              Contact & Reporting
+              Contact & Statutory Details
             </h3>
             <div className="space-y-3.5 text-xs">
               <div>
@@ -184,7 +190,7 @@ const EmployeeDetail = () => {
                 <span className="font-semibold text-slate-800 dark:text-slate-200">{employee.email}</span>
               </div>
               <div>
-                <span className="text-slate-400 block mb-0.5">Phone</span>
+                <span className="text-slate-400 block mb-0.5">Mobile Phone</span>
                 <span className="font-semibold text-slate-800 dark:text-slate-200">{employee.phone || 'Not provided'}</span>
               </div>
               <div>
@@ -193,10 +199,13 @@ const EmployeeDetail = () => {
                   {employee.manager ? `${employee.manager.firstName} ${employee.manager.lastName} (${employee.manager.designation})` : 'Executive Management'}
                 </span>
               </div>
-              <div>
-                <span className="text-slate-400 block mb-0.5">Date of Birth</span>
+              <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
+                <span className="text-slate-400 block mb-0.5">Bank Account & IFSC</span>
                 <span className="font-semibold text-slate-800 dark:text-slate-200">
-                  {employee.dob ? new Date(employee.dob).toLocaleDateString() : 'Not recorded'}
+                  {employee.bankDetails?.bankName || 'HDFC Bank'} &bull; {employee.bankDetails?.accountNo}
+                </span>
+                <span className="text-[10px] font-mono text-slate-500 block mt-0.5">
+                  IFSC: {employee.bankDetails?.ifscCode} &bull; UAN: {employee.uanNumber}
                 </span>
               </div>
             </div>
@@ -207,21 +216,26 @@ const EmployeeDetail = () => {
             <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-4">
               Leave Balances (Available)
             </h3>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 gap-3">
               <div className="rounded-xl bg-blue-50 p-3 text-center dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900">
-                <span className="text-[10px] font-bold text-blue-600 dark:text-blue-300 uppercase">Casual</span>
-                <p className="text-2xl font-black text-blue-700 dark:text-blue-300 mt-1">{balances.casual ?? 12}</p>
+                <span className="text-[10px] font-bold text-blue-600 dark:text-blue-300 uppercase">Casual (CL)</span>
+                <p className="text-2xl font-black text-blue-700 dark:text-blue-300 mt-1">{balances.casual ?? 10}</p>
                 <span className="text-[10px] text-blue-500">Days</span>
               </div>
               <div className="rounded-xl bg-amber-50 p-3 text-center dark:bg-amber-950/40 border border-amber-100 dark:border-amber-900">
-                <span className="text-[10px] font-bold text-amber-600 dark:text-amber-300 uppercase">Sick</span>
-                <p className="text-2xl font-black text-amber-700 dark:text-amber-300 mt-1">{balances.sick ?? 10}</p>
+                <span className="text-[10px] font-bold text-amber-600 dark:text-amber-300 uppercase">Sick (SL)</span>
+                <p className="text-2xl font-black text-amber-700 dark:text-amber-300 mt-1">{balances.sick ?? 9}</p>
                 <span className="text-[10px] text-amber-500">Days</span>
               </div>
               <div className="rounded-xl bg-emerald-50 p-3 text-center dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900">
-                <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-300 uppercase">Paid</span>
-                <p className="text-2xl font-black text-emerald-700 dark:text-emerald-300 mt-1">{balances.paid ?? 18}</p>
+                <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-300 uppercase">Earned (EL)</span>
+                <p className="text-2xl font-black text-emerald-700 dark:text-emerald-300 mt-1">{balances.paid ?? 15}</p>
                 <span className="text-[10px] text-emerald-500">Days</span>
+              </div>
+              <div className="rounded-xl bg-purple-50 p-3 text-center dark:bg-purple-950/40 border border-purple-100 dark:border-purple-900">
+                <span className="text-[10px] font-bold text-purple-600 dark:text-purple-300 uppercase">Restricted (RH)</span>
+                <p className="text-2xl font-black text-purple-700 dark:text-purple-300 mt-1">{balances.restricted ?? 2}</p>
+                <span className="text-[10px] text-purple-500">Days</span>
               </div>
             </div>
           </div>
@@ -229,33 +243,33 @@ const EmployeeDetail = () => {
           {/* Salary Compensation Breakdown */}
           <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs dark:border-slate-800 dark:bg-slate-900">
             <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-4">
-              Monthly Salary Breakdown
+              Monthly CTC Breakdown (INR ₹)
             </h3>
             <div className="space-y-2 text-xs">
               <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800">
-                <span className="text-slate-500">Basic Pay</span>
-                <span className="font-bold text-slate-800 dark:text-slate-200">${salary.basic?.toLocaleString()}</span>
+                <span className="text-slate-500">Basic Salary</span>
+                <span className="font-bold text-slate-800 dark:text-slate-200">₹{formatINR(salary.basic)}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800">
-                <span className="text-slate-500">HRA Allowance</span>
-                <span className="font-bold text-slate-800 dark:text-slate-200">${salary.hra?.toLocaleString()}</span>
+                <span className="text-slate-500">House Rent Allowance (HRA)</span>
+                <span className="font-bold text-slate-800 dark:text-slate-200">₹{formatINR(salary.hra)}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800">
-                <span className="text-slate-500">Other Allowances</span>
-                <span className="font-bold text-slate-800 dark:text-slate-200">${salary.allowances?.toLocaleString()}</span>
+                <span className="text-slate-500">Special Allowance</span>
+                <span className="font-bold text-slate-800 dark:text-slate-200">₹{formatINR(salary.allowances)}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800">
-                <span className="text-slate-500">PF Deduction</span>
-                <span className="font-bold text-rose-600">-${salary.pf?.toLocaleString()}</span>
+                <span className="text-slate-500">EPF Contribution (12%)</span>
+                <span className="font-bold text-rose-600">-₹{formatINR(salary.pf)}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800">
-                <span className="text-slate-500">Other Deductions</span>
-                <span className="font-bold text-rose-600">-${salary.deductions?.toLocaleString()}</span>
+                <span className="text-slate-500">Professional Tax (PT)</span>
+                <span className="font-bold text-rose-600">-₹{formatINR(salary.professionalTax || 200)}</span>
               </div>
               <div className="flex justify-between pt-2">
-                <span className="font-extrabold text-slate-900 dark:text-white">Net Take-Home Pay</span>
+                <span className="font-extrabold text-slate-900 dark:text-white">Net In-Hand Take-Home</span>
                 <span className="text-sm font-black text-emerald-600 dark:text-emerald-400">
-                  ${salary.netPay?.toLocaleString()}
+                  ₹{formatINR(salary.netPay)}
                 </span>
               </div>
             </div>
@@ -280,7 +294,7 @@ const EmployeeDetail = () => {
                   <div>
                     <h4 className="text-xs font-bold text-slate-900 dark:text-white">{doc.title}</h4>
                     <p className="text-[10px] text-slate-400 mt-0.5">
-                      Uploaded {new Date(doc.uploadedAt).toLocaleDateString()}
+                      Uploaded {new Date(doc.uploadedAt).toLocaleDateString('en-IN')}
                     </p>
                     <a
                       href={doc.fileUrl}
@@ -308,7 +322,7 @@ const EmployeeDetail = () => {
                   type="text"
                   value={docTitle}
                   onChange={(e) => setDocTitle(e.target.value)}
-                  placeholder="e.g. Tax Form W-4, Non-Disclosure Agreement"
+                  placeholder="e.g. Appointment Letter, Form 16, PAN Verification"
                   required
                   className="w-full rounded-xl border border-slate-200 p-2 text-xs dark:border-slate-800 dark:bg-slate-800 dark:text-white"
                 />

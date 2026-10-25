@@ -41,6 +41,22 @@ const candidateSchema = new mongoose.Schema(
       type: Number,
       default: 3,
     },
+    currentCtc: {
+      type: String,
+      default: '12 LPA',
+    },
+    expectedCtc: {
+      type: String,
+      default: '18 LPA',
+    },
+    noticePeriod: {
+      type: String,
+      default: '30 Days',
+    },
+    location: {
+      type: String,
+      default: 'Bengaluru',
+    },
     resumeUrl: {
       type: String,
       default: '',

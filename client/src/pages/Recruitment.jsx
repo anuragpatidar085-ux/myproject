@@ -16,13 +16,15 @@ import {
   CheckCircle2,
   ChevronRight,
   Users,
+  Clock,
+  Sparkles,
 } from 'lucide-react';
 
 const STAGES = [
   { id: 'applied', label: 'Applied', color: 'border-slate-300 bg-slate-50 dark:bg-slate-800/40' },
   { id: 'screening', label: 'Screening', color: 'border-blue-300 bg-blue-50/50 dark:bg-blue-950/20' },
-  { id: 'interview', label: 'Interview', color: 'border-amber-300 bg-amber-50/50 dark:bg-amber-950/20' },
-  { id: 'offer', label: 'Offer Sent', color: 'border-purple-300 bg-purple-50/50 dark:bg-purple-950/20' },
+  { id: 'interview', label: 'Tech Round', color: 'border-amber-300 bg-amber-50/50 dark:bg-amber-950/20' },
+  { id: 'offer', label: 'Offer Rollout', color: 'border-purple-300 bg-purple-50/50 dark:bg-purple-950/20' },
   { id: 'hired', label: 'Hired & Onboarded', color: 'border-emerald-300 bg-emerald-50/50 dark:bg-emerald-950/20' },
 ];
 
@@ -41,21 +43,25 @@ const Recruitment = () => {
   const [newCandidate, setNewCandidate] = useState({
     name: '',
     email: '',
-    phone: '',
+    phone: '+91 ',
     jobTitle: '',
     stage: 'applied',
     rating: 5,
-    experienceYears: 3,
+    experienceYears: 4,
+    currentCtc: '14 LPA',
+    expectedCtc: '20 LPA',
+    noticePeriod: '30 Days',
+    location: 'Bengaluru',
     notes: '',
   });
 
   const [newJob, setNewJob] = useState({
     title: '',
     department: 'Engineering',
-    location: 'Remote / Hybrid',
+    location: 'Bengaluru (Bellandur / Hybrid)',
     jobType: 'Full-time',
-    vacancies: 1,
-    salaryRange: '$90,000 - $120,000',
+    vacancies: 2,
+    salaryRange: '₹18,00,000 - ₹26,00,000 LPA',
     description: '',
   });
 
@@ -100,14 +106,14 @@ const Recruitment = () => {
       if (res.data?.success) {
         // Trigger celebratory confetti effect
         confetti({
-          particleCount: 100,
-          spread: 70,
+          particleCount: 120,
+          spread: 80,
           origin: { y: 0.6 },
         });
 
         setToast({
           type: 'success',
-          message: `🎉 Success! ${candidate.name} is now onboarded as an official employee!`,
+          message: `🎉 Badhaai Ho! ${candidate.name} is now onboarded into the Indian Tech Roster!`,
         });
         fetchRecruitmentData();
       }
@@ -121,16 +127,20 @@ const Recruitment = () => {
     try {
       const res = await api.post('/recruitment/candidates', newCandidate);
       if (res.data?.success) {
-        setToast({ type: 'success', message: 'Candidate added to pipeline!' });
+        setToast({ type: 'success', message: 'Candidate added to Indian talent pipeline!' });
         setCandidateModalOpen(false);
         setNewCandidate({
           name: '',
           email: '',
-          phone: '',
+          phone: '+91 ',
           jobTitle: '',
           stage: 'applied',
           rating: 5,
-          experienceYears: 3,
+          experienceYears: 4,
+          currentCtc: '14 LPA',
+          expectedCtc: '20 LPA',
+          noticePeriod: '30 Days',
+          location: 'Bengaluru',
           notes: '',
         });
         fetchRecruitmentData();
@@ -145,15 +155,15 @@ const Recruitment = () => {
     try {
       const res = await api.post('/recruitment/jobs', newJob);
       if (res.data?.success) {
-        setToast({ type: 'success', message: 'Job opening published!' });
+        setToast({ type: 'success', message: 'Job opening posted!' });
         setJobModalOpen(false);
         setNewJob({
           title: '',
           department: 'Engineering',
-          location: 'Remote / Hybrid',
+          location: 'Bengaluru (Bellandur / Hybrid)',
           jobType: 'Full-time',
-          vacancies: 1,
-          salaryRange: '$90,000 - $120,000',
+          vacancies: 2,
+          salaryRange: '₹18,00,000 - ₹26,00,000 LPA',
           description: '',
         });
         fetchRecruitmentData();
@@ -172,10 +182,10 @@ const Recruitment = () => {
         <div>
           <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white flex items-center gap-2.5">
             <Briefcase className="h-6 w-6 text-blue-600" />
-            Recruitment Tracker & Kanban Pipeline
+            Indian Tech Recruitment & Kanban Pipeline
           </h1>
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            Interactive hiring pipeline. Move applicants across stages and 1-click onboard hired candidates into full employee records.
+            Track notice periods, CTC expectations in LPA, technical screening rounds, and 1-click onboard hired engineers.
           </p>
         </div>
 
@@ -184,7 +194,7 @@ const Recruitment = () => {
             onClick={() => setJobModalOpen(true)}
             className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 shadow-xs hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200"
           >
-            <Building className="h-4 w-4 text-blue-600" /> Post Job Opening
+            <Building className="h-4 w-4 text-blue-600" /> Post Tech Opening
           </button>
           <button
             onClick={() => setCandidateModalOpen(true)}
@@ -195,11 +205,11 @@ const Recruitment = () => {
         </div>
       </div>
 
-      {/* Job Openings Ticker Bar */}
+      {/* Active Tech Openings Bar */}
       <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs dark:border-slate-800 dark:bg-slate-900">
         <div className="flex items-center justify-between mb-3">
           <span className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-            <Building className="h-3.5 w-3.5 text-blue-500" /> Active Job Postings ({jobs.length})
+            <Building className="h-3.5 w-3.5 text-blue-500" /> Active Openings Across Tech Centers ({jobs.length})
           </span>
         </div>
         <div className="flex flex-wrap gap-3">
@@ -215,7 +225,7 @@ const Recruitment = () => {
                 </span>
               </div>
               <span className="rounded-full bg-emerald-100 px-2 py-0.2 text-[9px] font-bold text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 uppercase">
-                Active
+                Hiring
               </span>
             </div>
           ))}
@@ -262,8 +272,18 @@ const Recruitment = () => {
                       {candidate.jobTitle}
                     </p>
 
-                    <p className="text-[10px] text-slate-400 mt-1">
-                      {candidate.email} &bull; {candidate.experienceYears}y exp
+                    {/* Indian CTC & Notice Period Badge */}
+                    <div className="mt-2 flex flex-wrap gap-1.5 text-[10px]">
+                      <span className="rounded bg-slate-100 px-1.5 py-0.5 font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                        {candidate.currentCtc || '12 LPA'} ➔ {candidate.expectedCtc || '18 LPA'}
+                      </span>
+                      <span className="rounded bg-amber-50 px-1.5 py-0.5 font-bold text-amber-700 dark:bg-amber-950/60 dark:text-amber-300">
+                        ⏳ {candidate.noticePeriod || '30 Days'}
+                      </span>
+                    </div>
+
+                    <p className="text-[10px] text-slate-400 mt-1.5">
+                      📍 {candidate.location || 'Bengaluru'} &bull; {candidate.experienceYears}y exp
                     </p>
 
                     {candidate.notes && (
@@ -284,8 +304,8 @@ const Recruitment = () => {
                           >
                             <option value="applied">Applied</option>
                             <option value="screening">Screening</option>
-                            <option value="interview">Interview</option>
-                            <option value="offer">Offer</option>
+                            <option value="interview">Tech Round</option>
+                            <option value="offer">Offer Rollout</option>
                             <option value="hired">Hired</option>
                           </select>
 
@@ -293,16 +313,16 @@ const Recruitment = () => {
                             <button
                               onClick={() => handleConvertToEmployee(candidate)}
                               className="flex items-center gap-1 rounded-lg bg-emerald-600 px-2 py-1 text-[10px] font-bold text-white shadow-xs hover:bg-emerald-700"
-                              title="Convert to full Employee record"
+                              title="1-Click Onboard to Employee"
                             >
-                              <UserCheck className="h-3 w-3" /> Hire
+                              <UserCheck className="h-3 w-3" /> Hire & Onboard
                             </button>
                           )}
                         </>
                       ) : (
                         <div className="flex items-center justify-between w-full">
                           <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-600">
-                            <CheckCircle2 className="h-3.5 w-3.5" /> Onboarded
+                            <CheckCircle2 className="h-3.5 w-3.5" /> Onboarded on Tech Payroll
                           </span>
                         </div>
                       )}
@@ -316,7 +336,7 @@ const Recruitment = () => {
       </div>
 
       {/* Add Candidate Modal */}
-      <Modal isOpen={candidateModalOpen} onClose={() => setCandidateModalOpen(false)} title="Add Candidate to Pipeline">
+      <Modal isOpen={candidateModalOpen} onClose={() => setCandidateModalOpen(false)} title="Add Candidate to Tech Pipeline">
         <form onSubmit={handleAddCandidate} className="space-y-4">
           <div>
             <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Full Name *</label>
@@ -341,7 +361,7 @@ const Recruitment = () => {
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Phone</label>
+              <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Mobile Phone (+91)</label>
               <input
                 type="text"
                 value={newCandidate.phone}
@@ -353,38 +373,62 @@ const Recruitment = () => {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Job Title / Role *</label>
+              <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Current CTC</label>
               <input
                 type="text"
-                value={newCandidate.jobTitle}
-                onChange={(e) => setNewCandidate({ ...newCandidate, jobTitle: e.target.value })}
-                placeholder="e.g. Senior Backend Engineer"
-                required
+                value={newCandidate.currentCtc}
+                onChange={(e) => setNewCandidate({ ...newCandidate, currentCtc: e.target.value })}
+                placeholder="e.g. 14 LPA"
                 className="w-full rounded-xl border border-slate-200 p-2.5 text-xs dark:border-slate-800 dark:bg-slate-800 dark:text-white"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Initial Stage</label>
+              <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Expected CTC</label>
+              <input
+                type="text"
+                value={newCandidate.expectedCtc}
+                onChange={(e) => setNewCandidate({ ...newCandidate, expectedCtc: e.target.value })}
+                placeholder="e.g. 20 LPA"
+                className="w-full rounded-xl border border-slate-200 p-2.5 text-xs dark:border-slate-800 dark:bg-slate-800 dark:text-white"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Notice Period</label>
               <select
-                value={newCandidate.stage}
-                onChange={(e) => setNewCandidate({ ...newCandidate, stage: e.target.value })}
+                value={newCandidate.noticePeriod}
+                onChange={(e) => setNewCandidate({ ...newCandidate, noticePeriod: e.target.value })}
                 className="w-full rounded-xl border border-slate-200 p-2.5 text-xs dark:border-slate-800 dark:bg-slate-800 dark:text-white"
               >
-                <option value="applied">Applied</option>
-                <option value="screening">Screening</option>
-                <option value="interview">Interview</option>
-                <option value="offer">Offer</option>
+                <option value="Immediate / Buyout">Immediate / Buyout</option>
+                <option value="15 Days">15 Days</option>
+                <option value="30 Days">30 Days</option>
+                <option value="60 Days">60 Days</option>
+                <option value="90 Days">90 Days</option>
               </select>
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Target Role *</label>
+              <input
+                type="text"
+                value={newCandidate.jobTitle}
+                onChange={(e) => setNewCandidate({ ...newCandidate, jobTitle: e.target.value })}
+                placeholder="e.g. Senior MERN Developer"
+                required
+                className="w-full rounded-xl border border-slate-200 p-2.5 text-xs dark:border-slate-800 dark:bg-slate-800 dark:text-white"
+              />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Interview Assessment / Notes</label>
+            <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Recruiter Notes / Alma Mater</label>
             <textarea
               value={newCandidate.notes}
               onChange={(e) => setNewCandidate({ ...newCandidate, notes: e.target.value })}
               rows="3"
-              placeholder="Candidate background, skills, recruiter remarks..."
+              placeholder="Candidate background, college, tech round remarks..."
               className="w-full rounded-xl border border-slate-200 p-2.5 text-xs dark:border-slate-800 dark:bg-slate-800 dark:text-white"
             />
           </div>
@@ -401,14 +445,14 @@ const Recruitment = () => {
               type="submit"
               className="rounded-xl bg-blue-600 px-5 py-2 text-xs font-bold text-white shadow-md shadow-blue-500/25 hover:bg-blue-700"
             >
-              Add Candidate
+              Add to Pipeline
             </button>
           </div>
         </form>
       </Modal>
 
       {/* Post Job Modal */}
-      <Modal isOpen={jobModalOpen} onClose={() => setJobModalOpen(false)} title="Create New Job Posting">
+      <Modal isOpen={jobModalOpen} onClose={() => setJobModalOpen(false)} title="Create New Tech Opening">
         <form onSubmit={handleCreateJob} className="space-y-4">
           <div>
             <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Job Title *</label>
@@ -416,7 +460,7 @@ const Recruitment = () => {
               type="text"
               value={newJob.title}
               onChange={(e) => setNewJob({ ...newJob, title: e.target.value })}
-              placeholder="e.g. Lead Frontend Architect"
+              placeholder="e.g. Lead React & Node.js Architect"
               required
               className="w-full rounded-xl border border-slate-200 p-2.5 text-xs dark:border-slate-800 dark:bg-slate-800 dark:text-white"
             />
@@ -452,20 +496,22 @@ const Recruitment = () => {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Work Location</label>
+              <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Tech Hub Location</label>
               <input
                 type="text"
                 value={newJob.location}
                 onChange={(e) => setNewJob({ ...newJob, location: e.target.value })}
+                placeholder="e.g. Bengaluru HQ / Hyderabad"
                 className="w-full rounded-xl border border-slate-200 p-2.5 text-xs dark:border-slate-800 dark:bg-slate-800 dark:text-white"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Salary Range</label>
+              <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">CTC Range (LPA)</label>
               <input
                 type="text"
                 value={newJob.salaryRange}
                 onChange={(e) => setNewJob({ ...newJob, salaryRange: e.target.value })}
+                placeholder="e.g. ₹20,00,000 - ₹30,00,000 LPA"
                 className="w-full rounded-xl border border-slate-200 p-2.5 text-xs dark:border-slate-800 dark:bg-slate-800 dark:text-white"
               />
             </div>
@@ -483,7 +529,7 @@ const Recruitment = () => {
               type="submit"
               className="rounded-xl bg-blue-600 px-5 py-2 text-xs font-bold text-white shadow-md shadow-blue-500/25 hover:bg-blue-700"
             >
-              Publish Job Opening
+              Publish Tech Opening
             </button>
           </div>
         </form>

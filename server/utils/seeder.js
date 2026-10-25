@@ -12,111 +12,158 @@ import { AuditLog } from '../models/AuditLog.js';
 
 dotenv.config();
 
-const sampleEmployees = [
+const indianEmployees = [
   {
     employeeCode: 'EMP-1001',
-    firstName: 'Sarah',
-    lastName: 'Connor',
+    firstName: 'Rajesh',
+    lastName: 'Sharma',
     email: 'admin@staffsync.com',
-    phone: '+1 (555) 234-5678',
+    phone: '+91 98201 45678',
     department: 'Human Resources',
     designation: 'VP of People & Culture',
     role: 'admin',
-    workLocation: 'New York HQ (Hybrid)',
-    dob: new Date('1988-10-14'),
+    workLocation: 'Bengaluru HQ (Bellandur)',
+    workMode: 'Hybrid',
+    panNumber: 'ABCPS1234F',
+    uanNumber: '101488992341',
+    bankDetails: { bankName: 'HDFC Bank', accountNo: '50100456123490', ifscCode: 'HDFC0000240' },
+    dob: new Date('1987-10-14'),
     joiningDate: new Date('2021-03-15'),
-    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
-    salary: { basic: 85000, hra: 34000, allowances: 15000, pf: 6000, deductions: 4000, netPay: 124000 },
+    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&auto=format&fit=crop&q=80',
+    salary: { basic: 95000, hra: 47500, allowances: 22000, conveyance: 3500, pf: 11400, professionalTax: 200, deductions: 6000, netPay: 150400 },
   },
   {
     employeeCode: 'EMP-1002',
-    firstName: 'David',
-    lastName: 'Kim',
+    firstName: 'Priya',
+    lastName: 'Patel',
     email: 'manager@staffsync.com',
-    phone: '+1 (555) 345-6789',
+    phone: '+91 98450 12345',
     department: 'Engineering',
     designation: 'Director of Engineering',
     role: 'manager',
-    workLocation: 'San Francisco (Onsite)',
-    dob: new Date('1990-10-28'),
+    workLocation: 'Bengaluru HQ (Whitefield)',
+    workMode: 'Office',
+    panNumber: 'BKLPP9876K',
+    uanNumber: '101299887766',
+    bankDetails: { bankName: 'ICICI Bank', accountNo: '001205009876', ifscCode: 'ICIC0000012' },
+    dob: new Date('1989-10-28'),
     joiningDate: new Date('2022-01-10'),
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-    salary: { basic: 95000, hra: 38000, allowances: 17000, pf: 7000, deductions: 5000, netPay: 138000 },
+    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+    salary: { basic: 110000, hra: 55000, allowances: 25000, conveyance: 3500, pf: 13200, professionalTax: 200, deductions: 8000, netPay: 172100 },
   },
   {
     employeeCode: 'EMP-1003',
-    firstName: 'Elena',
-    lastName: 'Rostova',
+    firstName: 'Amit',
+    lastName: 'Verma',
     email: 'employee@staffsync.com',
-    phone: '+1 (555) 456-7890',
+    phone: '+91 97112 34567',
     department: 'Engineering',
     designation: 'Senior Full Stack Engineer',
     role: 'employee',
-    workLocation: 'Remote (US)',
+    workLocation: 'Pune (Hinjawadi Phase 1)',
+    workMode: 'Hybrid',
+    panNumber: 'CYZPV5678M',
+    uanNumber: '101344556677',
+    bankDetails: { bankName: 'State Bank of India', accountNo: '309876543210', ifscCode: 'SBIN0001234' },
     dob: new Date('1994-06-18'),
     joiningDate: new Date('2022-10-01'),
-    avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=80',
-    salary: { basic: 70000, hra: 28000, allowances: 12000, pf: 5000, deductions: 3500, netPay: 101500 },
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+    salary: { basic: 75000, hra: 37500, allowances: 16000, conveyance: 3500, pf: 9000, professionalTax: 200, deductions: 4500, netPay: 118300 },
   },
   {
     employeeCode: 'EMP-1004',
-    firstName: 'Marcus',
-    lastName: 'Vance',
-    email: 'marcus.vance@staffsync.com',
-    phone: '+1 (555) 567-8901',
-    department: 'Product',
-    designation: 'Principal Product Manager',
-    role: 'manager',
-    workLocation: 'New York HQ (Hybrid)',
-    dob: new Date('1991-04-12'),
+    firstName: 'Neha',
+    lastName: 'Kulkarni',
+    email: 'neha.kulkarni@staffsync.com',
+    phone: '+91 98220 98765',
+    department: 'Design',
+    designation: 'Lead Product Designer',
+    role: 'employee',
+    workLocation: 'Mumbai (BKC Cybercity)',
+    workMode: 'Hybrid',
+    panNumber: 'DFGNK4321P',
+    uanNumber: '101566778899',
+    bankDetails: { bankName: 'Axis Bank', accountNo: '91201004567890', ifscCode: 'UTIB0000123' },
+    dob: new Date('1992-04-12'),
     joiningDate: new Date('2023-02-14'),
-    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
-    salary: { basic: 88000, hra: 35000, allowances: 14000, pf: 6200, deductions: 4200, netPay: 126600 },
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+    salary: { basic: 70000, hra: 35000, allowances: 14000, conveyance: 3500, pf: 8400, professionalTax: 200, deductions: 4200, netPay: 109700 },
   },
   {
     employeeCode: 'EMP-1005',
-    firstName: 'Aaliyah',
-    lastName: 'Patel',
-    email: 'aaliyah.patel@staffsync.com',
-    phone: '+1 (555) 678-9012',
-    department: 'Design',
-    designation: 'Senior Product Designer',
-    role: 'employee',
-    workLocation: 'San Francisco (Hybrid)',
-    dob: new Date('1995-10-20'),
-    joiningDate: new Date('2023-06-01'),
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-    salary: { basic: 65000, hra: 26000, allowances: 10000, pf: 4800, deductions: 3200, netPay: 93000 },
+    firstName: 'Vikram',
+    lastName: 'Malhotra',
+    email: 'vikram.malhotra@staffsync.com',
+    phone: '+91 99001 23456',
+    department: 'Engineering',
+    designation: 'Principal Cloud Architect',
+    role: 'manager',
+    workLocation: 'Hyderabad (HITEC City)',
+    workMode: 'Office',
+    panNumber: 'GHJVM8765Q',
+    uanNumber: '101788990011',
+    bankDetails: { bankName: 'HDFC Bank', accountNo: '50100678901234', ifscCode: 'HDFC0000456' },
+    dob: new Date('1988-10-20'),
+    joiningDate: new Date('2022-04-01'),
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+    salary: { basic: 105000, hra: 52500, allowances: 24000, conveyance: 3500, pf: 12600, professionalTax: 200, deductions: 7500, netPay: 164700 },
   },
   {
     employeeCode: 'EMP-1006',
-    firstName: 'Lucas',
-    lastName: 'Silva',
-    email: 'lucas.silva@staffsync.com',
-    phone: '+1 (555) 789-0123',
-    department: 'Marketing',
-    designation: 'Growth Marketing Lead',
+    firstName: 'Ananya',
+    lastName: 'Iyer',
+    email: 'ananya.iyer@staffsync.com',
+    phone: '+91 94440 87654',
+    department: 'Human Resources',
+    designation: 'Senior Talent Acquisition Partner',
     role: 'employee',
-    workLocation: 'Remote (Brazil)',
+    workLocation: 'Bengaluru HQ (Bellandur)',
+    workMode: 'Hybrid',
+    panNumber: 'JKLNA3214T',
+    uanNumber: '101899001122',
+    bankDetails: { bankName: 'Kotak Mahindra Bank', accountNo: '2012456789', ifscCode: 'KKBK0000123' },
     dob: new Date('1993-08-05'),
     joiningDate: new Date('2023-09-15'),
-    avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&auto=format&fit=crop&q=80',
-    salary: { basic: 58000, hra: 23000, allowances: 9000, pf: 4200, deductions: 2800, netPay: 83000 },
+    avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=80',
+    salary: { basic: 62000, hra: 31000, allowances: 12000, conveyance: 3500, pf: 7440, professionalTax: 200, deductions: 3500, netPay: 97360 },
   },
   {
     employeeCode: 'EMP-1007',
-    firstName: 'Chloe',
-    lastName: 'Dupont',
-    email: 'chloe.dupont@staffsync.com',
-    phone: '+1 (555) 890-1234',
+    firstName: 'Rohan',
+    lastName: 'Deshmukh',
+    email: 'rohan.deshmukh@staffsync.com',
+    phone: '+91 98190 65432',
     department: 'Finance',
-    designation: 'Senior Financial Analyst',
+    designation: 'Finance Controller & Payroll Lead',
     role: 'employee',
-    workLocation: 'New York HQ (Onsite)',
-    dob: new Date('1992-12-09'),
+    workLocation: 'Mumbai (BKC Cybercity)',
+    workMode: 'Office',
+    panNumber: 'MNOPR7654Z',
+    uanNumber: '101900112233',
+    bankDetails: { bankName: 'ICICI Bank', accountNo: '001205004567', ifscCode: 'ICIC0000045' },
+    dob: new Date('1991-12-09'),
     joiningDate: new Date('2022-05-18'),
+    avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&auto=format&fit=crop&q=80',
+    salary: { basic: 78000, hra: 39000, allowances: 17000, conveyance: 3500, pf: 9360, professionalTax: 200, deductions: 5000, netPay: 122940 },
+  },
+  {
+    employeeCode: 'EMP-1008',
+    firstName: 'Divya',
+    lastName: 'Nair',
+    email: 'divya.nair@staffsync.com',
+    phone: '+91 98470 54321',
+    department: 'Engineering',
+    designation: 'Site Reliability & DevOps Engineer',
+    role: 'employee',
+    workLocation: 'Bengaluru HQ (Whitefield)',
+    workMode: 'WFH',
+    panNumber: 'QWERN9812L',
+    uanNumber: '101911223344',
+    bankDetails: { bankName: 'HDFC Bank', accountNo: '50100789012345', ifscCode: 'HDFC0000123' },
+    dob: new Date('1995-10-18'),
+    joiningDate: new Date('2023-11-01'),
     avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
-    salary: { basic: 68000, hra: 27000, allowances: 11000, pf: 5000, deductions: 3400, netPay: 97600 },
+    salary: { basic: 68000, hra: 34000, allowances: 15000, conveyance: 3500, pf: 8160, professionalTax: 200, deductions: 4000, netPay: 108140 },
   },
 ];
 
@@ -127,7 +174,7 @@ export const seedDatabase = async () => {
       await mongoose.connect(mongoUri);
     }
 
-    console.log('\x1b[34m%s\x1b[0m', '🌱 Seeding StaffSync with Enterprise HRMS Demo Data...');
+    console.log('\x1b[34m%s\x1b[0m', '🇮🇳 Seeding StaffSync with Authentic Indian Corporate HRMS Data...');
 
     // Clear existing collections
     await User.deleteMany({});
@@ -140,20 +187,20 @@ export const seedDatabase = async () => {
     await Announcement.deleteMany({});
     await AuditLog.deleteMany({});
 
-    // 1. Create Employees & Users
+    // 1. Create Indian Employees & Users
     const createdEmployees = [];
-    for (const empData of sampleEmployees) {
+    for (const empData of indianEmployees) {
       const employee = await Employee.create({
         ...empData,
-        leaveBalances: { casual: 10, sick: 9, paid: 15 },
+        leaveBalances: { casual: 10, sick: 9, paid: 15, restricted: 2 },
         documents: [
           {
-            title: 'Employment Offer Letter',
+            title: 'Offer of Employment & Appointment Letter',
             fileUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
             uploadedAt: empData.joiningDate,
           },
           {
-            title: 'Identity Verification & Tax W-4',
+            title: 'PAN & Aadhaar Identity Verification Record',
             fileUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
             uploadedAt: empData.joiningDate,
           },
@@ -172,21 +219,22 @@ export const seedDatabase = async () => {
       createdEmployees.push(employee);
     }
 
-    // Set Manager mapping: EMP-1002 (David Kim) manages EMP-1003 and EMP-1005
-    const david = createdEmployees.find((e) => e.email === 'manager@staffsync.com');
-    const sarah = createdEmployees.find((e) => e.email === 'admin@staffsync.com');
+    // Set Manager mapping: Priya Patel manages Amit & Divya, Vikram manages Hyderabad team
+    const priya = createdEmployees.find((e) => e.email === 'manager@staffsync.com');
+    const rajesh = createdEmployees.find((e) => e.email === 'admin@staffsync.com');
+    const vikram = createdEmployees.find((e) => e.email === 'vikram.malhotra@staffsync.com');
 
     for (const emp of createdEmployees) {
       if (emp.department === 'Engineering' && emp.email !== 'manager@staffsync.com') {
-        emp.manager = david._id;
+        emp.manager = priya._id;
         await emp.save();
       } else if (emp.email !== 'admin@staffsync.com') {
-        emp.manager = sarah._id;
+        emp.manager = rajesh._id;
         await emp.save();
       }
     }
 
-    // 2. Attendance records for past 7 days
+    // 2. Attendance records for past 7 days across Indian Tech Centers
     const today = new Date();
     const todayStr = today.toISOString().split('T')[0];
 
@@ -196,9 +244,8 @@ export const seedDatabase = async () => {
       const dateStr = d.toISOString().split('T')[0];
 
       for (const emp of createdEmployees) {
-        // Skip some days or employees for realism
         const isToday = dateStr === todayStr;
-        const checkInHour = 8 + Math.floor(Math.random() * 2); // 8 AM or 9 AM
+        const checkInHour = 8 + Math.floor(Math.random() * 2);
         const checkInMinute = Math.floor(Math.random() * 50);
         const checkIn = new Date(d);
         checkIn.setHours(checkInHour, checkInMinute, 0);
@@ -216,52 +263,52 @@ export const seedDatabase = async () => {
           checkOut: isToday ? null : checkOut,
           workHours: isToday ? 0 : workHours,
           status,
-          notes: status === 'late' ? 'Traffic delay on transit' : 'Regular office check-in',
-          location: emp.workLocation.includes('Remote') ? 'Remote (Home Office)' : 'HQ - Tower A, 4th Floor',
+          notes: status === 'late' ? 'Traffic bottleneck at Silk Board / Marathahalli' : 'Standard biometric check-in',
+          location: emp.workLocation.includes('WFH') ? 'Work From Home (WFH)' : emp.workLocation,
         });
       }
     }
 
-    // 3. Leave Requests
+    // 3. Indian Leave Requests (CL, SL, EL, RH)
     await Leave.create([
       {
-        employee: createdEmployees[2]._id, // Elena
+        employee: createdEmployees[2]._id, // Amit Verma
         leaveType: 'casual',
         startDate: new Date(Date.now() + 86400000 * 3),
         endDate: new Date(Date.now() + 86400000 * 5),
         daysCount: 3,
-        reason: 'Family wedding out of state',
+        reason: 'Attending cousin wedding in Jaipur, Rajasthan',
         status: 'pending',
       },
       {
-        employee: createdEmployees[4]._id, // Aaliyah
+        employee: createdEmployees[3]._id, // Neha Kulkarni
         leaveType: 'paid',
-        startDate: new Date(Date.now() + 86400000 * 10),
-        endDate: new Date(Date.now() + 86400000 * 14),
+        startDate: new Date(Date.now() + 86400000 * 8),
+        endDate: new Date(Date.now() + 86400000 * 12),
         daysCount: 5,
-        reason: 'Annual vacation trip to Europe',
+        reason: 'Diwali family vacation to hometown Pune',
         status: 'approved',
-        reviewedBy: sarah._id,
-        reviewerName: 'Sarah Connor',
-        reviewNote: 'Approved. Enjoy your vacation!',
+        reviewedBy: rajesh._id,
+        reviewerName: 'Rajesh Sharma',
+        reviewNote: 'Approved. Advance Happy Diwali to your family!',
         reviewedAt: new Date(),
       },
       {
-        employee: createdEmployees[5]._id, // Lucas
+        employee: createdEmployees[7]._id, // Divya Nair
         leaveType: 'sick',
-        startDate: new Date(Date.now() - 86400000 * 4),
-        endDate: new Date(Date.now() - 86400000 * 3),
+        startDate: new Date(Date.now() - 86400000 * 3),
+        endDate: new Date(Date.now() - 86400000 * 2),
         daysCount: 2,
-        reason: 'Seasonal viral flu',
+        reason: 'High fever and viral flu',
         status: 'approved',
-        reviewedBy: sarah._id,
-        reviewerName: 'Sarah Connor',
-        reviewNote: 'Get well soon',
-        reviewedAt: new Date(Date.now() - 86400000 * 4),
+        reviewedBy: priya._id,
+        reviewerName: 'Priya Patel',
+        reviewNote: 'Get well soon, please take complete rest.',
+        reviewedAt: new Date(Date.now() - 86400000 * 3),
       },
     ]);
 
-    // 4. Payroll Records for Current & Previous Month
+    // 4. Monthly Indian Payroll Records (INR ₹)
     const currentMonth = today.getMonth() + 1;
     const currentYear = today.getFullYear();
     const monthNames = [
@@ -273,11 +320,13 @@ export const seedDatabase = async () => {
       const basic = emp.salary.basic;
       const hra = emp.salary.hra;
       const allowances = emp.salary.allowances;
+      const conveyance = emp.salary.conveyance || 3500;
       const pf = emp.salary.pf;
-      const deductions = emp.salary.deductions;
-      const tax = Math.round(basic * 0.1);
-      const totalEarnings = basic + hra + allowances;
-      const totalDeductions = pf + deductions + tax;
+      const pt = emp.salary.professionalTax || 200;
+      const tax = Math.round(basic * 0.08); // 8% TDS estimate under new regime
+      const bonus = 5000; // Festive Diwali advance bonus
+      const totalEarnings = basic + hra + allowances + conveyance + bonus;
+      const totalDeductions = pf + pt + tax;
       const netPay = totalEarnings - totalDeductions;
 
       await Payroll.create({
@@ -288,154 +337,171 @@ export const seedDatabase = async () => {
         basic,
         hra,
         allowances,
-        bonus: 1000,
+        conveyance,
+        bonus,
         pf,
+        professionalTax: pt,
         tax,
-        deductions,
-        totalEarnings: totalEarnings + 1000,
+        deductions: 0,
+        totalEarnings,
         totalDeductions,
-        netPay: netPay + 1000,
+        netPay,
         paymentStatus: 'paid',
         paymentDate: new Date(),
       });
     }
 
-    // 5. Job Openings & Candidates (Recruitment Pipeline)
+    // 5. Indian Tech Job Openings & Kanban Candidate Pipeline
     const job1 = await JobOpening.create({
-      title: 'Senior Cloud DevOps Engineer',
+      title: 'Senior MERN / Full Stack Developer',
       department: 'Engineering',
-      location: 'Hybrid / Remote',
+      location: 'Bengaluru (Bellandur / Hybrid)',
       jobType: 'Full-time',
-      vacancies: 2,
+      vacancies: 3,
       experience: '4-7 years',
-      salaryRange: '$120,000 - $150,000',
-      description: 'Lead Kubernetes orchestration, Terraform automation, and CI/CD resilience.',
+      salaryRange: '₹18,00,000 - ₹26,00,000 LPA',
+      description: 'Hands-on React 19, Node.js, distributed microservices, MongoDB and Redis caching.',
       status: 'open',
     });
 
     const job2 = await JobOpening.create({
-      title: 'Product Marketing Specialist',
-      department: 'Marketing',
-      location: 'New York HQ',
+      title: 'DevOps & Kubernetes Specialist',
+      department: 'Engineering',
+      location: 'Hyderabad / Pune',
       jobType: 'Full-time',
-      vacancies: 1,
-      experience: '2-4 years',
-      salaryRange: '$85,000 - $105,000',
-      description: 'Drive GTM campaigns, product messaging, and user acquisition funnels.',
+      vacancies: 2,
+      experience: '3-6 years',
+      salaryRange: '₹16,00,000 - ₹24,00,000 LPA',
+      description: 'Manage production AWS EKS clusters, Terraform, CI/CD pipelines and Helm deployments.',
       status: 'open',
     });
 
     await Candidate.create([
       {
-        name: 'Jordan Hayes',
-        email: 'jordan.hayes@example.com',
-        phone: '+1 (555) 912-3456',
+        name: 'Aditya Swaminathan',
+        email: 'aditya.swami@gmail.com',
+        phone: '+91 98840 12345',
         jobOpening: job1._id,
         jobTitle: job1.title,
         stage: 'interview',
         rating: 5,
-        experienceYears: 6,
-        notes: 'Exceptional deep-dive on AWS architectures and multi-region failover.',
+        experienceYears: 5,
+        currentCtc: '15.5 LPA',
+        expectedCtc: '22 LPA',
+        noticePeriod: '30 Days',
+        location: 'Bengaluru (IIT Madras alum)',
+        notes: 'Cleared System Design round with flying colors. Strong knowledge of Kafka & MongoDB sharding.',
       },
       {
-        name: 'Samantha Rivera',
-        email: 'samantha.rivera@example.com',
-        phone: '+1 (555) 823-4567',
+        name: 'Sneha Chawla',
+        email: 'sneha.chawla@outlook.com',
+        phone: '+91 99100 87654',
         jobOpening: job1._id,
         jobTitle: job1.title,
         stage: 'screening',
         rating: 4,
         experienceYears: 4,
-        notes: 'Solid Docker & GitHub Actions background. Scheduled for technical screen.',
+        currentCtc: '12 LPA',
+        expectedCtc: '18 LPA',
+        noticePeriod: 'Immediate / Buyout',
+        location: 'Gurugram (BITS Pilani)',
+        notes: 'Strong JavaScript fundamentals. Good problem solving on LeetCode. Scheduled for tech screen.',
       },
       {
-        name: 'Liam Chen',
-        email: 'liam.chen@example.com',
-        phone: '+1 (555) 734-5678',
+        name: 'Karthik Ramanathan',
+        email: 'karthik.r@yahoo.co.in',
+        phone: '+91 98401 98765',
         jobOpening: job2._id,
         jobTitle: job2.title,
         stage: 'offer',
         rating: 5,
-        experienceYears: 4,
-        notes: 'Offer package sent for VP Marketing approval.',
+        experienceYears: 6,
+        currentCtc: '18 LPA',
+        expectedCtc: '25 LPA',
+        noticePeriod: '60 Days',
+        location: 'Hyderabad (NIT Warangal)',
+        notes: 'Official offer roll-out approved by VP HR Rajesh Sharma.',
       },
       {
-        name: 'Devon Brooks',
-        email: 'devon.brooks@example.com',
-        phone: '+1 (555) 645-6789',
+        name: 'Pooja Bhattacharya',
+        email: 'pooja.bhatt@gmail.com',
+        phone: '+91 98300 23456',
         jobOpening: job2._id,
         jobTitle: job2.title,
         stage: 'applied',
         rating: 4,
         experienceYears: 3,
-        notes: 'Impressive B2B SaaS portfolio submitted via LinkedIn.',
+        currentCtc: '10 LPA',
+        expectedCtc: '15 LPA',
+        noticePeriod: '30 Days',
+        location: 'Pune',
+        notes: 'Received resume via employee referral from Amit Verma.',
       },
     ]);
 
-    // 6. Announcements
+    // 6. Indian Corporate Announcements
     await Announcement.create([
       {
-        title: '🎉 Q4 All-Hands Town Hall & Product Roadmap Reveal',
+        title: '🪔 Diwali Festival Holidays & Annual Bonus Dispatch',
         content:
-          'Join leadership this Thursday at 3:00 PM EST in the Main Auditorium or on Zoom for our quarterly company townhall. We will celebrate milestone achievements and review 2027 strategic expansion plans!',
-        priority: 'high',
-        targetDepartment: 'All',
-        authorName: 'Sarah Connor (VP HR)',
-        isPinned: true,
-      },
-      {
-        title: '🩺 Annual Health Insurance Open Enrollment Window',
-        content:
-          'The health, dental, and vision insurance benefit renewal portal is open until November 15th. Please review and update your dependent coverage options in the benefits tab.',
+          'StaffSync family wishes everyone a very Happy Diwali! Our offices in Bengaluru, Mumbai, Pune, Hyderabad, and Gurugram will observe holidays on Oct 31st and Nov 1st. Diwali festive advance bonus has been credited along with this month payslip.',
         priority: 'urgent',
         targetDepartment: 'All',
-        authorName: 'People Operations',
+        authorName: 'Rajesh Sharma (VP HR)',
         isPinned: true,
       },
       {
-        title: '🚀 Engineering Tech Talk: Microservices & Event Streaming',
+        title: '📋 FY2026-27 IT Declaration & Form 16 Window Open',
         content:
-          'David Kim will be hosting an engineering deep dive into our distributed event bus architecture this Friday at 11:00 AM.',
+          'The finance team has opened the annual tax investment proof submission window on the portal. Please submit Section 80C, 80D, and HRA rent receipts or opt for the New Tax Regime before Nov 20th.',
+        priority: 'high',
+        targetDepartment: 'All',
+        authorName: 'Rohan Deshmukh (Finance Controller)',
+        isPinned: true,
+      },
+      {
+        title: '🚀 StaffSync All-India Hackathon: Generative AI in HRMS',
+        content:
+          'Join us this Friday for the 36-hour internal hackathon across our Bengaluru, Pune, and Hyderabad engineering hubs. Exciting cash rewards and spot bonuses for top 3 teams!',
         priority: 'medium',
         targetDepartment: 'Engineering',
-        authorName: 'David Kim',
+        authorName: 'Priya Patel (Director of Engineering)',
         isPinned: false,
       },
     ]);
 
-    // 7. Initial Audit Trail
+    // 7. Initial Indian Audit Trail
     await AuditLog.create([
       {
-        actorName: 'Sarah Connor',
+        actorName: 'Rajesh Sharma',
         actorEmail: 'admin@staffsync.com',
         actorRole: 'admin',
-        action: 'SYSTEM_INITIALIZED',
+        action: 'SYSTEM_PROVISIONED',
         entityType: 'System',
-        details: 'StaffSync HRMS Enterprise Suite successfully provisioned with production seed data.',
+        details: 'StaffSync India Technologies HRMS Suite successfully provisioned with Bengaluru, Mumbai & Pune tech rosters.',
       },
       {
-        actorName: 'David Kim',
+        actorName: 'Priya Patel',
         actorEmail: 'manager@staffsync.com',
         actorRole: 'manager',
-        action: 'PAYROLL_GENERATED',
+        action: 'PAYROLL_PROCESSED',
         entityType: 'Payroll',
-        details: `Generated October payroll batch for ${createdEmployees.length} employees.`,
+        details: `Dispatched October salary slips in INR for ${createdEmployees.length} Indian tech team members.`,
       },
     ]);
 
-    console.log('\x1b[32m%s\x1b[0m', '✔ StaffSync Database Seeded Successfully!');
-    console.log('\x1b[36m%s\x1b[0m', '---------------------------------------------------');
-    console.log('Demo Credentials (Password for all: Password123!)');
-    console.log('1. Admin/HR:  admin@staffsync.com');
-    console.log('2. Manager:   manager@staffsync.com');
-    console.log('3. Employee:  employee@staffsync.com');
-    console.log('\x1b[36m%s\x1b[0m', '---------------------------------------------------');
+    console.log('\x1b[32m%s\x1b[0m', '✔ StaffSync Database Seeded Successfully with Indian Corporate Roster!');
+    console.log('\x1b[36m%s\x1b[0m', '----------------------------------------------------------------------');
+    console.log('🇮🇳 Demo Credentials (Password for all: Password123!)');
+    console.log('1. Admin/HR:  admin@staffsync.com    (Rajesh Sharma - VP HR)');
+    console.log('2. Manager:   manager@staffsync.com  (Priya Patel - Director of Engineering)');
+    console.log('3. Employee:  employee@staffsync.com (Amit Verma - Senior Full Stack Engineer)');
+    console.log('\x1b[36m%s\x1b[0m', '----------------------------------------------------------------------');
   } catch (error) {
     console.error('Seeding error:', error);
   }
 };
 
-// Run directly if invoked as script
 if (process.argv[1]?.includes('seeder.js')) {
   seedDatabase().then(() => {
     mongoose.connection.close();

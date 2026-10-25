@@ -1,6 +1,7 @@
 {
   "name": "staffsync",
   "version": "1.0.0",
+  "type": "module",
   "description": "StaffSync - Modern Enterprise MERN Workforce, HRMS & Payroll Suite",
   "scripts": {
     "start": "node run-dev.js",
