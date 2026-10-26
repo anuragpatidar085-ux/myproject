@@ -47,7 +47,7 @@ const Login = () => {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 p-4 transition-colors">
+    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-emerald-50 dark:from-slate-950 dark:via-slate-950 dark:to-teal-950 p-4 transition-colors">
       {/* Top right theme toggle */}
       <div className="absolute top-6 right-6">
         <button
@@ -60,10 +60,10 @@ const Login = () => {
 
       <div className="w-full max-w-lg">
         {/* Card */}
-        <div className="rounded-3xl border border-slate-200/80 bg-white p-8 shadow-xl dark:border-slate-800 dark:bg-slate-900">
+        <div className="rounded-2xl border border-slate-200/80 bg-white/95 p-8 shadow-xl shadow-slate-900/5 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/95 dark:shadow-black/20">
           {/* Logo & Headline */}
           <div className="text-center">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-black shadow-lg shadow-blue-500/30 mb-4">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-tr from-teal-700 to-emerald-500 text-white font-black shadow-lg shadow-teal-700/25 mb-4">
               <Building2 className="h-7 w-7" />
             </div>
             <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">

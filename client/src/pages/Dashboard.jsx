@@ -32,7 +32,7 @@ import {
 } from 'recharts';
 import { Link } from 'react-router-dom';
 
-const COLORS = ['#2563eb', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4'];
+const COLORS = ['#0f766e', '#10b981', '#f59e0b', '#e8795a', '#3b82a0', '#84a98c'];
 
 const formatINR = (val) => Number(val || 0).toLocaleString('en-IN');
 
@@ -69,7 +69,7 @@ const Dashboard = () => {
   return (
     <div className="space-y-6">
       {/* Welcome Hero Banner with Indian Tech Hub Context */}
-      <div className="rounded-3xl bg-gradient-to-r from-blue-700 via-indigo-700 to-blue-800 p-8 text-white shadow-xl shadow-blue-500/10">
+      <div className="rounded-2xl bg-gradient-to-br from-teal-800 via-teal-700 to-emerald-700 p-7 text-white shadow-xl shadow-teal-900/15">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold backdrop-blur-md mb-2">

@@ -13,7 +13,8 @@ const StatCard = ({ title, value, subtitle, icon: Icon, color = 'blue' }) => {
   const badgeColor = colorMap[color] || colorMap.blue;
 
   return (
-    <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
+    <div className="group relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
+      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 to-emerald-400 opacity-80 transition-opacity group-hover:opacity-100" />
       <div className="flex items-center justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">

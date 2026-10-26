@@ -23,7 +23,7 @@ const Navbar = ({ onToggleSidebar }) => {
   };
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-slate-200 bg-white/95 px-4 backdrop-blur-md transition-colors dark:border-slate-800 dark:bg-slate-900/95 lg:px-8">
+    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-slate-200 bg-white/90 px-4 shadow-xs backdrop-blur-xl transition-colors dark:border-slate-800 dark:bg-slate-900/90 lg:px-8">
       {/* Left: Mobile hamburger & title */}
       <div className="flex items-center gap-3">
         <button
@@ -34,7 +34,7 @@ const Navbar = ({ onToggleSidebar }) => {
           <Menu className="h-5 w-5" />
         </button>
         <div className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-bold shadow-md shadow-blue-500/20">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-teal-700 to-emerald-500 text-white font-bold shadow-md shadow-teal-700/20">
             S
           </div>
           <div>

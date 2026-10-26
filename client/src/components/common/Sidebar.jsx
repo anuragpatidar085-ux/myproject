@@ -44,14 +44,14 @@ const Sidebar = ({ isOpen, onClose }) => {
 
       {/* Sidebar container */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-slate-200 bg-white transition-transform duration-300 ease-in-out dark:border-slate-800 dark:bg-slate-900 lg:static lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-slate-200 bg-white/95 shadow-sm transition-transform duration-300 ease-in-out dark:border-slate-800 dark:bg-slate-900/95 lg:static lg:translate-x-0 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         {/* Brand & Mobile Close button */}
         <div className="flex h-16 items-center justify-between border-b border-slate-200 px-6 dark:border-slate-800">
           <div className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-black shadow-md">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-teal-700 to-emerald-500 text-white font-black shadow-md shadow-teal-700/20">
               <Building2 className="h-5 w-5" />
             </div>
             <div>
