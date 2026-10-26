@@ -16,6 +16,12 @@ import dashboardRoutes from './routes/dashboardRoutes.js';
 import recruitmentRoutes from './routes/recruitmentRoutes.js';
 import announcementRoutes from './routes/announcementRoutes.js';
 import auditRoutes from './routes/auditRoutes.js';
+import reviewRoutes from './routes/reviewRoutes.js';
+import trainingRoutes from './routes/trainingRoutes.js';
+import expenseRoutes from './routes/expenseRoutes.js';
+import orgRoutes from './routes/orgRoutes.js';
+import lifecycleRoutes from './routes/lifecycleRoutes.js';
+import assetRoutes from './routes/assetRoutes.js';
 
 dotenv.config();
 
@@ -61,6 +67,12 @@ app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/recruitment', recruitmentRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/audit', auditRoutes);
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/training', trainingRoutes);
+app.use('/api/expenses', expenseRoutes);
+app.use('/api/org', orgRoutes);
+app.use('/api/lifecycle', lifecycleRoutes);
+app.use('/api/assets', assetRoutes);
 
 // Error Handling Middleware
 app.use(errorHandler);

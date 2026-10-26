@@ -19,6 +19,28 @@ import {
   Building,
 } from 'lucide-react';
 
+const DOCUMENT_CATEGORIES = [
+  { value: 'identity', label: 'Identity' },
+  { value: 'tax', label: 'Tax' },
+  { value: 'employment', label: 'Employment' },
+  { value: 'education', label: 'Education' },
+  { value: 'banking', label: 'Banking' },
+  { value: 'other', label: 'Other' },
+];
+
+const TODAY = new Date();
+TODAY.setHours(0, 0, 0, 0);
+
+const getExpiryStatus = (expiresAt) => {
+  if (!expiresAt) return null;
+  const expiryDate = new Date(expiresAt);
+  expiryDate.setHours(0, 0, 0, 0);
+  const daysRemaining = Math.ceil((expiryDate - TODAY) / (1000 * 60 * 60 * 24));
+  if (daysRemaining < 0) return { label: 'Expired', style: 'bg-rose-50 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300' };
+  if (daysRemaining <= 30) return { label: 'Expiring soon', style: 'bg-amber-50 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300' };
+  return { label: 'Valid', style: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300' };
+};
+
 const formatINR = (val) => Number(val || 0).toLocaleString('en-IN');
 
 const EmployeeDetail = () => {
@@ -32,6 +54,8 @@ const EmployeeDetail = () => {
   // Document upload state
   const [docTitle, setDocTitle] = useState('');
   const [docUrl, setDocUrl] = useState('');
+  const [docCategory, setDocCategory] = useState('other');
+  const [docExpiresAt, setDocExpiresAt] = useState('');
 
   const fetchEmployee = async () => {
     try {
@@ -58,11 +82,15 @@ const EmployeeDetail = () => {
       const res = await api.post(`/employees/${id}/documents`, {
         title: docTitle,
         fileUrl: docUrl,
+        category: docCategory,
+        expiresAt: docExpiresAt || null,
       });
       if (res.data?.success) {
         setToast({ type: 'success', message: 'Document added to official personnel record!' });
         setDocTitle('');
         setDocUrl('');
+        setDocCategory('other');
+        setDocExpiresAt('');
         fetchEmployee();
       }
     } catch (err) {
@@ -87,6 +115,8 @@ const EmployeeDetail = () => {
 
   const salary = employee.salary || {};
   const balances = employee.leaveBalances || {};
+  const currentEmployeeId = user?.employeeId || user?.employee?._id;
+  const canUploadDocument = hasRole('admin', 'manager') || String(currentEmployeeId) === String(employee._id);
 
   return (
     <div className="space-y-6">
@@ -283,9 +313,13 @@ const EmployeeDetail = () => {
           {/* Document list */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {employee.documents?.map((doc, idx) => (
+              (() => {
+                const expiryStatus = getExpiryStatus(doc.expiresAt);
+                const categoryLabel = DOCUMENT_CATEGORIES.find((category) => category.value === doc.category)?.label || 'Other';
+                return (
               <div
-                key={idx}
-                className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs dark:border-slate-800 dark:bg-slate-900 flex items-start justify-between"
+                key={doc._id || `${doc.title}-${idx}`}
+                className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs dark:border-slate-800 dark:bg-slate-900"
               >
                 <div className="flex items-start gap-3">
                   <div className="rounded-xl bg-blue-50 p-2 text-blue-600 dark:bg-blue-950 dark:text-blue-400">
@@ -293,9 +327,16 @@ const EmployeeDetail = () => {
                   </div>
                   <div>
                     <h4 className="text-xs font-bold text-slate-900 dark:text-white">{doc.title}</h4>
+                    <span className="mt-1 inline-block rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{categoryLabel}</span>
                     <p className="text-[10px] text-slate-400 mt-0.5">
                       Uploaded {new Date(doc.uploadedAt).toLocaleDateString('en-IN')}
                     </p>
+                    {doc.expiresAt && (
+                      <div className="mt-2 flex flex-wrap items-center gap-2">
+                        <span className="text-[10px] text-slate-500">Expires {new Date(doc.expiresAt).toLocaleDateString('en-IN')}</span>
+                        {expiryStatus && <span className={`rounded-full px-2 py-0.5 text-[9px] font-bold ${expiryStatus.style}`}>{expiryStatus.label}</span>}
+                      </div>
+                    )}
                     <a
                       href={doc.fileUrl}
                       target="_blank"
@@ -307,11 +348,13 @@ const EmployeeDetail = () => {
                   </div>
                 </div>
               </div>
+                );
+              })()
             ))}
           </div>
 
           {/* Upload New Document Box */}
-          <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50/50 p-6 dark:border-slate-800 dark:bg-slate-900/50 max-w-xl">
+          {canUploadDocument && <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50/50 p-6 dark:border-slate-800 dark:bg-slate-900/50 max-w-xl">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-3 flex items-center gap-2">
               <Upload className="h-4 w-4" /> Attach Official Document / Verification
             </h4>
@@ -338,6 +381,27 @@ const EmployeeDetail = () => {
                   className="w-full rounded-xl border border-slate-200 p-2 text-xs dark:border-slate-800 dark:bg-slate-800 dark:text-white"
                 />
               </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div>
+                  <label className="block text-[11px] text-slate-500 mb-1">Category</label>
+                  <select
+                    value={docCategory}
+                    onChange={(e) => setDocCategory(e.target.value)}
+                    className="w-full rounded-xl border border-slate-200 p-2 text-xs dark:border-slate-800 dark:bg-slate-800 dark:text-white"
+                  >
+                    {DOCUMENT_CATEGORIES.map((category) => <option key={category.value} value={category.value}>{category.label}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[11px] text-slate-500 mb-1">Expiry Date (optional)</label>
+                  <input
+                    type="date"
+                    value={docExpiresAt}
+                    onChange={(e) => setDocExpiresAt(e.target.value)}
+                    className="w-full rounded-xl border border-slate-200 p-2 text-xs dark:border-slate-800 dark:bg-slate-800 dark:text-white"
+                  />
+                </div>
+              </div>
               <button
                 type="submit"
                 className="rounded-xl bg-blue-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-blue-700"
@@ -345,7 +409,7 @@ const EmployeeDetail = () => {
                 Upload & Save Document
               </button>
             </form>
-          </div>
+          </div>}
         </div>
       )}
     </div>

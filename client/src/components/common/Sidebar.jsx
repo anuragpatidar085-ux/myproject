@@ -12,10 +12,16 @@ import {
   ShieldCheck,
   X,
   Building2,
+  ClipboardList,
+  GraduationCap,
+  ReceiptIndianRupee,
+  Network,
+  ClipboardCheck,
+  Box,
 } from 'lucide-react';
 
 const Sidebar = ({ isOpen, onClose }) => {
-  const { user, hasRole } = useAuth();
+  const { user } = useAuth();
 
   const navigation = [
     { name: 'Dashboard', to: '/', icon: LayoutDashboard, roles: ['admin', 'manager', 'employee'] },
@@ -23,6 +29,12 @@ const Sidebar = ({ isOpen, onClose }) => {
     { name: 'Attendance', to: '/attendance', icon: Clock, roles: ['admin', 'manager', 'employee'] },
     { name: 'Leave Workflow', to: '/leaves', icon: CalendarCheck, roles: ['admin', 'manager', 'employee'] },
     { name: 'Payroll & Payslips', to: '/payroll', icon: CreditCard, roles: ['admin', 'manager', 'employee'] },
+    { name: 'Performance Reviews', to: '/reviews', icon: ClipboardList, roles: ['admin', 'manager', 'employee'] },
+    { name: 'Training & Skills', to: '/training', icon: GraduationCap, roles: ['admin', 'manager', 'employee'] },
+    { name: 'Expense Claims', to: '/expenses', icon: ReceiptIndianRupee, roles: ['admin', 'manager', 'employee'] },
+    { name: 'Org Structure', to: '/org', icon: Network, roles: ['admin', 'manager', 'employee'] },
+    { name: 'Onboarding & Offboarding', to: '/lifecycle', icon: ClipboardCheck, roles: ['admin', 'manager', 'employee'] },
+    { name: 'Company Assets', to: '/assets', icon: Box, roles: ['admin', 'manager', 'employee'] },
     { name: 'Recruitment Kanban', to: '/recruitment', icon: Briefcase, roles: ['admin', 'manager'] },
     { name: 'Notice Board', to: '/announcements', icon: Megaphone, roles: ['admin', 'manager', 'employee'] },
     { name: 'Audit Logs', to: '/audit', icon: ShieldCheck, roles: ['admin'] },

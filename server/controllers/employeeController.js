@@ -309,9 +309,23 @@ export const toggleEmployeeStatus = async (req, res) => {
 // @route   POST /api/employees/:id/documents
 export const uploadDocument = async (req, res) => {
   try {
-    const { title, fileUrl } = req.body;
+    const { title, fileUrl, category = 'other', expiresAt = null } = req.body;
     if (!title || !fileUrl) {
       return res.status(400).json({ success: false, message: 'Title and fileUrl are required' });
+    }
+
+    const allowedCategories = ['identity', 'tax', 'employment', 'education', 'banking', 'other'];
+    if (!allowedCategories.includes(category)) {
+      return res.status(400).json({ success: false, message: 'Invalid document category' });
+    }
+    try {
+      const url = new URL(fileUrl);
+      if (!['http:', 'https:'].includes(url.protocol)) throw new Error('Invalid protocol');
+    } catch {
+      return res.status(400).json({ success: false, message: 'Document URL must be a valid HTTP or HTTPS link' });
+    }
+    if (expiresAt && Number.isNaN(new Date(expiresAt).getTime())) {
+      return res.status(400).json({ success: false, message: 'Document expiry date is invalid' });
     }
 
     const employee = await Employee.findById(req.params.id);
@@ -319,9 +333,17 @@ export const uploadDocument = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Employee not found' });
     }
 
+    const isSelf = req.user.employeeId && req.user.employeeId.toString() === employee._id.toString();
+    const isAdminOrManager = ['admin', 'manager'].includes(req.user.role?.toLowerCase());
+    if (!isSelf && !isAdminOrManager) {
+      return res.status(403).json({ success: false, message: 'You can only add documents to your own profile' });
+    }
+
     employee.documents.push({
-      title,
+      title: title.trim(),
       fileUrl,
+      category,
+      expiresAt: expiresAt || null,
       uploadedAt: new Date(),
     });
 

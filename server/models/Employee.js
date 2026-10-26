@@ -110,6 +110,12 @@ const employeeSchema = new mongoose.Schema(
       {
         title: { type: String, required: true },
         fileUrl: { type: String, required: true },
+        category: {
+          type: String,
+          enum: ['identity', 'tax', 'employment', 'education', 'banking', 'other'],
+          default: 'other',
+        },
+        expiresAt: { type: Date, default: null },
         uploadedAt: { type: Date, default: Date.now },
       },
     ],

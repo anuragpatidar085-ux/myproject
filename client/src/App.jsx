@@ -18,6 +18,12 @@ import Payroll from './pages/Payroll';
 import Recruitment from './pages/Recruitment';
 import Announcements from './pages/Announcements';
 import AuditLogs from './pages/AuditLogs';
+import Reviews from './pages/Reviews';
+import Training from './pages/Training';
+import Expenses from './pages/Expenses';
+import OrgStructure from './pages/OrgStructure';
+import Lifecycle from './pages/Lifecycle';
+import Assets from './pages/Assets';
 
 // Role Protected Route Wrapper
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -172,6 +178,72 @@ const AppRoutes = () => {
           <ProtectedRoute allowedRoles={['admin']}>
             <MainLayout>
               <AuditLogs />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/reviews"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <Reviews />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/training"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <Training />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/expenses"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <Expenses />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/org"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <OrgStructure />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/lifecycle"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <Lifecycle />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/assets"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <Assets />
             </MainLayout>
           </ProtectedRoute>
         }
